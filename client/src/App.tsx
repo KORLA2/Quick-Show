@@ -1,14 +1,21 @@
 import React from 'react'
-import {Navbar , Footer} from "./components/index"
+import {Navbar , Footer,Auth} from "./components/index"
 import { BrowserRouter ,Routes,Route} from 'react-router-dom'
 import { Home, MovieDetails,Movies, MyBookings, SeatLayout,Favourites } from './pages'
-
+import {  useSelector } from 'react-redux'
 
 const App = () => {
+  let signIn=useSelector((store)=>store.auth.signIn);
+
   return (
 
 <BrowserRouter>
+{
+signIn &&<div className='backdrop-blur  bg-black/10 z-10 top-0 left-0 right-0 bottom-0 absolute '>
 
+<Auth/>
+</div>
+}
 <Navbar/>
 
 <Routes>

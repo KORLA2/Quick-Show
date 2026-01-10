@@ -1,3 +1,3 @@
-export const assets: {
-[key:string]:string
-};
+ export   let assets:{
+    [key:string]:string
+}

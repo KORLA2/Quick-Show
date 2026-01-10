@@ -3,7 +3,7 @@
 *{
     font-family: Outfit;
     scrollbar-width: thin;
-    scrollbar-color: #c1c1c1 pink;
+    scrollbar-color: #c1c1c1 rgb(248, 247, 247);
 }
 body{
     color:white;
