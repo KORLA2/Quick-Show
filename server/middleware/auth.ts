@@ -1,7 +1,7 @@
 import type { RequestHandler } from "express";
 import { verifyToken } from "../controllers/token";
 import {pool } from "../db/connect"
-
+import  {signInSchema,signUpSchema, type signInFormData} from "../../client/schemas/auth.ts" 
 export let Protect:RequestHandler=async(req,res,next)=>{
 try{
 
@@ -36,3 +36,19 @@ req.user={...user.rows[0]}
 
 
 }
+
+export let Validate:RequestHandler=async (req,res,next)=>{
+ let path=req.path; 
+ let schema =path=="/signIn"?signInSchema:signUpSchema;
+    let result= schema.safeParse(req.body);
+    console.log(result);
+   if(!result.success){
+  return   res.status(400).json({
+     "message":"Invalid Input"
+    })
+   }
+
+ next();  
+}
+
+

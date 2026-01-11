@@ -3,8 +3,8 @@ import { Eye,EyeClosed, XIcon } from 'lucide-react';
 import { useDispatch } from 'react-redux';
 import { setSignIn } from '../../utils/authSlice';
 import { useForm } from 'react-hook-form';
-import z from 'zod';
-
+import {signInSchema,signUpSchema} from '../../schemas/auth.ts' 
+import type { AuthForm } from '../../schemas/auth.ts';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Link, useNavigate } from 'react-router-dom';
 const Auth = () => {
@@ -15,26 +15,6 @@ let navigate=useNavigate()
 let dispatch=useDispatch();
 useEffect(()=>{reset()},[isSignIn])
 
-let signUpSchema=z.object({
-  name:z.string().min(2,'Name must be at least 2 characters long').max(50,'Name must be at most 50 characters long'),
-  email:z.email("Invalid Email Address"),
-  password:z.string().min(6,'Password must be at least 6 characters long'),
-  confirmPassword:z.string().min(6,'Confirm Password must be at least 6 characters long')
-}).refine(data=>data.password===data.confirmPassword,{
-  message:"Passwords do not match",
-  path:["confirmPassword"]
-});
-
-
-let signInSchema=z.object({
-
-  email:z.email("Invalid Email Address"),
-  password:z.string().min(6,'Password must be at least 6 characters long'),
-})
-
-type signInFormData=z.infer<typeof signInSchema>;
-type signUpFormData=z.infer<typeof signUpSchema>
-type AuthForm=signInFormData &Partial<signUpFormData>
 
 let schema =isSignIn?signInSchema:signUpSchema;
 
