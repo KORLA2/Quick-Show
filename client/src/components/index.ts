@@ -1,3 +1,6 @@
 export {default as Footer} from './Footer';
 export {default as Navbar} from './Navbar';
 export {default as Auth} from './Auth'
+export {default as HeroSection} from "./HeroSection"
+export {default as FeaturedSection} from "./FeaturedSection"
+export {default as MovieCards} from "./MovieCards"
