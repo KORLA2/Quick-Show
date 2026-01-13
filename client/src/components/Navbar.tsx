@@ -11,7 +11,9 @@ const handleSignIn=()=>{
     dispatch(setSignIn());
 }
   return (
-   <div className='flex items-center justify-between px-6 py-5 md:px-16 lg:px-36'>
+   
+
+   <div className=' relative z-1 flex items-center justify-between px-6 py-5 md:px-16 lg:px-36'>
 <Link to ="/">
 <img src={assets.logo} className='w-36 h-auto'/>
 </Link>
@@ -39,6 +41,7 @@ max-md:absolute max-md:top-0 max-md:left-0 z-5  ${open ? "max-md:translate-x-0 w
    <MenuIcon onClick={()=>{setisOpen(true)}} className={`w-8 h-8 md:hidden cursor-pointer max-md:ml-4` }/>
    
    </div>
+   
   )
 }
 
