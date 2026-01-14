@@ -1,15 +1,39 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import {assets} from "../assets/assets.js"
-import { MenuIcon, SearchIcon, XIcon } from 'lucide-react'
-import { useDispatch } from 'react-redux'
-import {setSignIn} from '../../utils/authSlice.ts'
+import { MenuIcon, SearchIcon, UserCircleIcon, XIcon } from 'lucide-react'
+import { useDispatch, useSelector } from 'react-redux'
+import {setLogInUser, setSignIn} from '../../utils/authSlice.ts'
+import type { RootState } from '../../utils/store.ts'
 const Navbar = () => {
 let [open,setisOpen]=useState(false);
-let dispatch=useDispatch()
+let [userIconClicked,setUserIconClicked]=useState(false);
+let user=useSelector((store:RootState)=>store.auth.user)
+let dispatch=useDispatch();
+let navigate=useNavigate();
+
 const handleSignIn=()=>{
     dispatch(setSignIn());
 }
+
+let handleLogOut= async()=>{
+try{
+
+    let data=await fetch("/api/user/signOut",{
+        method:"GET",
+       
+    });
+    let jsonData=await data.json();
+    console.log(jsonData);
+    navigate("/")
+    dispatch(setLogInUser(null));
+    setUserIconClicked(!userIconClicked)
+}catch(err){
+    console.log(err)
+}
+  
+}
+
   return (
    
 
@@ -32,11 +56,28 @@ max-md:absolute max-md:top-0 max-md:left-0 z-5  ${open ? "max-md:translate-x-0 w
 </div>
 
 <div className= { `flex gap-8 
-    items-center `}>
+    items-center relative `}>
 <SearchIcon className='max-md:hidden cursor-pointer w-6 h-6'/>
-<Link to ="/user/signIn">
-<button onClick={handleSignIn} className='px-4 py-1 sm:px-7 sm:py-2 bg-red-700 hover:bg-red-900 transition duration-200 rounded-full cursor-pointer '>Login</button>
-</Link>
+  {
+   
+   user?  <div onClick={()=>setUserIconClicked(!userIconClicked)} className='flex items-center gap-2 max-md:none cursor-pointer'><UserCircleIcon  className='h-10 w-10  rounded-full truncate'/>{user?.name.slice(0,10)} </div> :
+ <Link to="/user/signIn">
+ <button onClick={handleSignIn} className='px-4 py-1 sm:px-7 sm:py-2 bg-red-700 hover:bg-red-900 transition duration-200 rounded-full cursor-pointer '>Login</button>
+ </Link>
+  }
+   {
+      userIconClicked&&(
+
+        <div className='bg-gray-200 rounded-lg border border-white/10 md:left-20 text-black top-10  font-medium text-md px-5  py-6  absolute '>
+          <Link to="/user/profile" ><p  onClick={()=>setUserIconClicked(!userIconClicked)} className='cursor-pointer mb-1'> MyProfile</p></Link>  
+            <p onClick={handleLogOut} className='cursor-pointer mb-1'>LogOut</p>
+            <p  onClick={()=>setUserIconClicked(!userIconClicked)} className='cursor-pointer'>Close</p>
+        </div>
+
+      )
+
+   }
+
 </div>
    <MenuIcon onClick={()=>{setisOpen(true)}} className={`w-8 h-8 md:hidden cursor-pointer max-md:ml-4` }/>
    

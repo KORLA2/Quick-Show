@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Eye,EyeClosed, XIcon } from 'lucide-react';
 import { useDispatch } from 'react-redux';
-import { setSignIn } from '../../utils/authSlice';
+import { setLogInUser, setSignIn } from '../../utils/authSlice';
 import { useForm } from 'react-hook-form';
 import {signInSchema,signUpSchema} from '../../schemas/auth.ts' 
 import type { AuthForm } from '../../schemas/auth.ts';
@@ -26,7 +26,7 @@ let handleForm=async(data:AuthForm)=>{
 try{
 
   let url=isSignIn?'/api/user/signIn':'/api/user/signUp';
-  console.log(url,JSON.stringify(data))
+  // console.log(url,JSON.stringify(data))
 
   let postData=await fetch(url,{
     method:'POST',
@@ -41,7 +41,9 @@ try{
   if (!postData.ok) throw jsonData.message;
 
   navigate("/");
-dispatch(setSignIn())
+  dispatch(setLogInUser(jsonData))
+dispatch(setSignIn());
+
 }catch(err:any){
   console.log(err)
   setError("email",{

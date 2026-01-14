@@ -3,10 +3,12 @@ import {Navbar , Footer,Auth} from "./components/index"
 import { BrowserRouter ,Routes,Route} from 'react-router-dom'
 import { Home, MovieDetails,Movies, MyBookings, SeatLayout,Favourites } from './pages'
 import {  useSelector } from 'react-redux'
+import { useUser } from '../src/customhooks/useUser'
+import type { RootState } from '../utils/store'
 
 const App = () => {
-  let signIn=useSelector((store)=>store.auth.signIn);
-
+  let signIn=useSelector((store:RootState)=>store.auth.signIn);
+useUser();
   return (
 
 <BrowserRouter>

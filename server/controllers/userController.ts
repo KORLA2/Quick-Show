@@ -69,6 +69,7 @@ console.log(email,password)
 
       let token=generateToken(data.uid);
       res.cookie('token',token,cookieOptions);
+
    return res.status(200).json({
    uid: data.uid,
    name:data.name,
@@ -82,7 +83,8 @@ console.log(email,password)
 
 
 export let SignOutUser:RequestHandler=async(req,res)=>{
-  
+  console.log("SignOut Requested came")
+
   res.cookie('token','',cookieOptions);
 
   res.status(200).json({
@@ -92,7 +94,7 @@ export let SignOutUser:RequestHandler=async(req,res)=>{
 
 
 export let GetProfile:RequestHandler=async(req,res)=>{
-  
+ 
   if(!req.user){
   return res.status(200).json({
     message:"Your Profile Not found"
