@@ -4,3 +4,4 @@ export {default as Auth} from './Auth'
 export {default as HeroSection} from "./HeroSection"
 export {default as FeaturedSection} from "./FeaturedSection"
 export {default as MovieCards} from "./MovieCards"
+export {default as SelectDate} from "./SelectDate"

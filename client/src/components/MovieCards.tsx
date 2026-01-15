@@ -1,16 +1,26 @@
 import { Star } from 'lucide-react'
 import type {MovieType} from "../types/MovieType"
 import { useNavigate } from 'react-router-dom'
-import { TimeFormat } from '../timeFOrmat'
-
+import { TimeFormat } from '../TimeFormat'
+import { useDispatch } from 'react-redux'
+import { setShow } from '../../utils/movieSlice'
 const MovieCards = ({movie}:{movie:MovieType}) => {
 
-    let navigate=useNavigate()
+    let navigate=useNavigate();
+  let dispatch=useDispatch();
+
+let handleMovie=()=>{
+dispatch(setShow(movie))
+console.log(movie)
+navigate(`/movie/${movie._id}`);
+scrollTo(0,0)
+
+}
   return (
-    <div className='flex flex-col justify-between p-3 bg-gray-800 rounded-2xl hover:-translate-y-1 
+    <div onClick={handleMovie} className='flex flex-col justify-between p-3 bg-gray-800 rounded-2xl hover:-translate-y-1 
     transition duration-300 w-66 cursor-pointer
     '>
-<img onClick={()=>{navigate(`/movie/${movie._id}`);scrollTo(0,0)}} src={movie.backdrop_path} 
+<img  src={movie.backdrop_path} 
  className='rounded-lg object-cover h-52 w-full  cursor-pointer' /> 
     
     <p className='font-semibold mt-2 truncate'>{movie.title}</p>
@@ -21,7 +31,7 @@ const MovieCards = ({movie}:{movie:MovieType}) => {
 
 </p>
 <div className='flex justify-between items-center mt-4 pb-3'>
-    <button onClick={()=>{navigate(`/movie/${movie._id}`);scrollTo(0,0)}} className='px-4 py-2 bg-red-700 hover:bg-red-800 cursor-pointer
+    <button  className='px-4 py-2 bg-red-700 hover:bg-red-800 cursor-pointer
         font-medium rounded-full transition text-gray-300 text-xs'>Buy Ticket</button>
     <p className='flex items-center gap-1 text-sm text-gray-400 mt-1 pr-1'>
         <Star className='w-4 h-4 fill-red-700'/>

@@ -37,7 +37,7 @@ try{
   return (
    
 
-   <div className=' relative z-1 flex items-center justify-between px-6 py-5 md:px-16 lg:px-36'>
+   <div className='  relative z-10 flex items-center justify-between px-6 py-5 md:px-16 lg:px-36'>
 <Link to ="/">
 <img src={assets.logo} className='w-36 h-auto'/>
 </Link>
