@@ -5,7 +5,7 @@ import { Home, MovieDetails,Movies, MyBookings, SeatLayout,Favourites } from './
 import {  useSelector } from 'react-redux'
 import { useUser } from '../src/customhooks/useUser'
 import type { RootState } from '../utils/store'
-
+import { Toaster } from 'react-hot-toast'
 const App = () => {
   let signIn=useSelector((store:RootState)=>store.auth.signIn);
 useUser();
@@ -19,7 +19,7 @@ signIn &&<div className='backdrop-blur  bg-black/10 z-10 top-0 left-0 right-0 bo
 </div>
 }
 <Navbar/>
-
+<Toaster  position="top-center" />
 <Routes>
 <Route path='/' element={<Home/>}/>
 <Route path='/movies' element={<Movies/>}/>
