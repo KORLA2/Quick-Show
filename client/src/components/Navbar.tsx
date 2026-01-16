@@ -68,7 +68,7 @@ max-md:absolute max-md:top-0 max-md:left-0 z-5  ${open ? "max-md:translate-x-0 w
    {
       userIconClicked&&(
 
-        <div className='bg-gray-200 rounded-lg border border-white/10 md:left-20 text-black top-10  font-medium text-md px-5  py-6  absolute '>
+        <div   className='bg-gray-200 rounded-lg border border-white/10 md:left-20 text-black top-10  font-medium text-md px-5  py-6  absolute '>
           <Link to="/user/profile" ><p  onClick={()=>setUserIconClicked(!userIconClicked)} className='cursor-pointer mb-1'> MyProfile</p></Link>  
             <p onClick={handleLogOut} className='cursor-pointer mb-1'>LogOut</p>
             <p  onClick={()=>setUserIconClicked(!userIconClicked)} className='cursor-pointer'>Close</p>

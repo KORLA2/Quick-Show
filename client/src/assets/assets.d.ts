@@ -9,3 +9,4 @@ export let dummyShowsData:MovieType[]
 export let dummyTrailers:TrailerType[]
 
 export let dummyDateTimeData:ShowDateTimeType
+export let dummyBookingData:BookingType[]

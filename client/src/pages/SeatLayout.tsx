@@ -5,7 +5,7 @@ import type { RootState } from '../../utils/store';
 import type { ShowState } from '../types/ShowState';
 import { assets, dummyDateTimeData } from '../assets/assets';
 import Loading from '../components/Loading';
-import { Clock4Icon } from 'lucide-react';
+import { ArrowRightIcon, Clock4Icon } from 'lucide-react';
 import BlurCircle from '../components/BlurCircle';
 import toast from 'react-hot-toast';
 
@@ -20,6 +20,12 @@ let [show,setShow]=useState<ShowState|null>(null)
 let [selectedTime,setSelectedTime]=useState<string|null>(null)
 let selectedMovie=useSelector((store:RootState)=>store.movie.show);
 
+let handleCheckOut=()=>{
+  if(selectedSeats.length==0)
+    return toast("Please Select Seats before Payment");
+
+  navigate("/mybookings");scrollTo(0,0)
+}
 
 let getShow=()=>{
 
@@ -129,8 +135,9 @@ return (<button onClick={()=>handleClick(seatId)} className={`h-8 w-8 cursor-poi
 
 </div>
 </div>
-<button onClick={()=>{navigate("/mybookings");scrollTo(0,0)}} className=' bg-red-700 px-10 mt-20 hover:bg-red-800 transition py-3 font-medium text-sm rounded-full cursor-pointer' >
+<button onClick={handleCheckOut} className=' group flex items-center gap-2 bg-red-700 px-10 mt-20 hover:bg-red-800 transition py-3 font-medium text-sm rounded-full cursor-pointer' >
   Check Out
+  <ArrowRightIcon className='group-hover:translate-x-0.5' />
 </button>
 </div>
   </div>:<Loading/>
