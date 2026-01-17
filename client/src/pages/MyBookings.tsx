@@ -31,7 +31,7 @@ useEffect(()=>{
     '>
    
 <div className='flex flex-col md:flex-row '>
-  <img src={movie.show.movie.backdrop_path} className='aspect-video max-w-45  object-bottom rounded h-auto object-cover'/>
+  <img src={movie.show.movie.backdrop_path} className='md:w-45  rounded h-auto object-cover'/>
 <div className='flex flex-col p-4'> 
   <p className='text-lg font-semibold'>{movie.show.movie.title}</p>
   <p className='text-gray-400 text-sm'>{TimeFormat(movie.show.movie.runtime)}</p>

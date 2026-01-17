@@ -27,7 +27,7 @@ let navigate=useNavigate();
 <p className='text-gray-300'>
 A group of misfit criminals come together to stop a powerful villain, Ronan, from using a mysterious orb that can destroy entire planets. Along the way, they form an unlikely family and learn to work as a team to save the galaxy.
 </p>
-<button  onClick={()=>navigate("/movies")} className='flex group items-center gap-1 px-6 py-3 text-sm rounded-full  transition font-medium  cursor-pointer bg-red-700 hover:bg-red-800'>
+<button  onClick={()=>{navigate("/movies");scrollTo(0,0)}} className='flex group items-center gap-1 px-6 py-3 text-sm rounded-full  transition font-medium  cursor-pointer bg-red-700 hover:bg-red-800'>
     Explore Movies
     <ArrowRight className='group-hover:translate-x-0.5  transition  w-5 h-5 '/>
 </button>

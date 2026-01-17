@@ -196,6 +196,151 @@ export const dummyShowsData = [
     }
 ]
 
+export const dummyMovieTheaters={
+    "324544":[
+{       "id":1,
+        "name":"Brahmaramba",
+        "Area":"Kukatpally",
+        "rating":4.5
+    },{
+        "id":2,
+        "name":"Mallikarjuna",
+        "Area":"Kukatpally",
+        "rating":2.3
+    },
+    {
+        "id":3,
+        "name":"Shiva Parvathi",
+        "Area":"Kukatpally",
+        "rating":4.8
+    },{
+        "id":4,
+        "name":"Vishwanath",
+        "Area":"Kukatpally",
+        "rating":4.3
+    }
+    ],
+"1232546":[
+{       "id":5, 
+        "name":"Lulu mall",
+        "Area":"JNTU",
+        "rating":4.3
+    },{
+        "id":6,
+        "name":"Mallikarjuna",
+        "Area":"Kukatpally",
+        "rating":2.3
+    },
+    {   "id":7,
+        "name":"Shiva Parvathi",
+        "Area":"Kukatpally",
+        "rating":4.8
+    },{ "id":8,
+        "name":"Vishwanath",
+        "Area":"Kukatpally",
+        "rating":4.3
+    }
+],
+"552524":[
+{       "id":9,
+        "name":"Nexus Mall",
+        "Area":"Kukatpally",
+        "rating":4.8
+    },
+    {  
+         "id":10,
+        "name":"Shiva Parvathi",
+        "Area":"Kukatpally",
+        "rating":4.8
+    },{
+        "id":11,
+        "name":"Prasad Multiplex",
+        "Area":"Gachibowli",
+        "rating":4.3
+    }
+],
+"668489":[{
+    "id":12,
+        "name":"Brahmaramba",
+        "Area":"Kukatpally",
+        "rating":4.5
+    },{
+        "id":13,
+        "name":"Mallikarjuna",
+        "Area":"Kukatpally",
+        "rating":2.3
+    },
+    {
+        "id":14,
+        "name":"Shiva Parvathi",
+        "Area":"Kukatpally",
+        "rating":4.8
+    },{
+        "id":14,
+        "name":"Vishwanath",
+        "Area":"Kukatpally",
+        "rating":4.3
+    }],
+"950387":[
+{       "id":15,
+        "name":"Shiva Parvathi",
+        "Area":"Kukatpally",
+        "rating":4.8
+    },{
+        "id":16,
+        "name":"Vishwanath",
+        "Area":"Kukatpally",
+        "rating":4.3
+    }
+],
+"575265":[
+{       "id":17,
+        "name":"Prasad Multiplex",
+        "Area":"Kukatpally",
+        "rating":4.5
+    },{
+        "id":18,
+        "name":"Lulu Mall",
+        "Area":"Kukatpally",
+        "rating":2.3
+    },
+    {  "id":19,
+        "name":"Nexus Mall",
+        "Area":"Kukatpally",
+        "rating":4.8
+    },{
+        "id":20,
+        "name":"Ashoka One Mall",
+        "Area":"Kukatpally",
+        "rating":4.3
+    }
+],
+"986056":[
+{       "id":21,
+        "name":"Brahmaramba",
+        "Area":"Kondapur",
+        "rating":4.5
+    },{
+        "id":22,
+        "name":"Mallikarjuna",
+        "Area":"JNTU",
+        "rating":2.3
+    },
+    {  "id":23,
+        "name":"Asian",
+        "Area":"Kukatpally",
+        "rating":4.8
+    },{
+        "id":24,
+        "name":"Cine Polis",
+        "Area":"Gachibowli",
+        "rating":4.3
+    }
+]
+}
+
+
+
 export const dummyDateTimeData = {
     "2025-07-24": [
         { "time": "2025-07-24T01:00:00.000Z", "showId": "68395b407f6329be2bb45bd1" },
@@ -394,3 +539,5 @@ export const dummyBookingData = [
         "isPaid": true,
     },
 ]
+
+

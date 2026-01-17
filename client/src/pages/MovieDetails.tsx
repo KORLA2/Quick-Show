@@ -56,9 +56,9 @@ useEffect(()=>{
             <PlayCircleIcon className='w-5 h-5 '/>
             Watch Trailer
             </button>
-          <a href="#SelectDate" className='px-7 py-3 text-sm bg-red-700
+          <button  onClick={()=>{navigate(`/movie/${id}/theaters`);scrollTo(0,0)}} className='px-7 py-3 text-sm bg-red-700
           transition rounded-md font-medium cursor-pointer hover:bg-red-800/80 active:scale-102
-          '>Buy Tickets</a>
+          '>Buy Tickets</button>
           <button className='rounded-full bg-red-700 cursor-pointer p-2.5 transition '>
             <Heart className='w-5 h-5 hover:fill-white'/>
           </button>
@@ -78,7 +78,6 @@ useEffect(()=>{
             }
           </div>
         </div>
-  <SelectDate dateTime={show.dateTime} id={id as string}/>
   <p className='font-medium text-lg mt-20 mb-8'>You May also Like</p>
 <div className='flex flex-wrap gap-8 max-sm:justify-center '>
   {

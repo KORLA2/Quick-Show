@@ -4,16 +4,24 @@ import { ChevronLeftIcon, ChevronRight, ChevronRightIcon } from 'lucide-react'
 import type { ShowDateTimeType } from '../types/SHowDateTimeType' 
 import { useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
+import { useSelector } from 'react-redux'
+import type { RootState } from '../../utils/store'
 
 const SelectDate = ({dateTime,id}:{dateTime:ShowDateTimeType,id:string}) => {
 
 let [selected,setSelected]=useState<string|null>(null);
+let theaterId=useSelector((store:RootState)=>store.theater.theaterId)
+
 let navigate=useNavigate()
 let OnBookHanlder=()=>{
 
     if(!selected){
         
     return toast("Please Select a Date Before Booking")
+    }
+
+    if(!theaterId){
+        return toast("Please Select Your Favourite Theater")
     }
 
     navigate(`/movie/${id}/${selected}`)

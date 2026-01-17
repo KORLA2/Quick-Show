@@ -6,6 +6,7 @@ import {  useSelector } from 'react-redux'
 import { useUser } from '../src/customhooks/useUser'
 import type { RootState } from '../utils/store'
 import { Toaster } from 'react-hot-toast'
+import Theaters from './pages/Theaters'
 const App = () => {
   let signIn=useSelector((store:RootState)=>store.auth.signIn);
 useUser();
@@ -26,6 +27,7 @@ signIn &&<div className='backdrop-blur  bg-black/10 z-10 top-0 left-0 right-0 bo
 <Route path='/movie/:id' element={<MovieDetails/>}/>        
 <Route path='/mybookings' element={<MyBookings/>}/>
 <Route path='/movie/:id/:date' element={<SeatLayout/>}/>
+<Route path='/movie/:id/theaters' element={<Theaters/>}/>
 <Route path='/favourites' element={<Favourites/>} />
 <Route path='*' element={<div>404 path not found</div>}/>
 </Routes>

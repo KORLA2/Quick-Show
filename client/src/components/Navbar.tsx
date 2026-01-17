@@ -50,7 +50,7 @@ max-md:absolute max-md:top-0 max-md:left-0 z-5  ${open ? "max-md:translate-x-0 w
     <XIcon onClick={()=>setisOpen(!open)} className='md:hidden absolute right-6 top-6 w-6 h-6 cursor-pointer'/>
     <Link onClick={()=>{scrollTo(0,0); setisOpen(false)}} to={"/"}>Home</Link>
     <Link  onClick={()=>{scrollTo(0,0); setisOpen(false)}} to={"/movies"}>Movies</Link>
-    <Link onClick={()=>{scrollTo(0,0); setisOpen(false)}}  to={"/"}>Theaters</Link>
+    <Link onClick={()=>{scrollTo(0,0); setisOpen(false)}}  to={"/theaters"}>Theaters</Link>
     <Link  onClick={()=>{scrollTo(0,0); setisOpen(false)}} to={"/"}>Releases</Link>
     <Link  onClick={()=>{scrollTo(0,0); setisOpen(false)}} to={"/favourites"}>Favourites</Link>
 </div>

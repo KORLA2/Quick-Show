@@ -11,12 +11,13 @@ const MovieCards = ({movie}:{movie:MovieType}) => {
 
 let handleMovie=()=>{
 dispatch(setShow(movie))
-console.log(movie)
-navigate(`/movie/${movie._id}`);
+navigate(`/movie/${movie._id}`)
 scrollTo(0,0)
 
 }
   return (
+
+   
     <div onClick={handleMovie} className='flex flex-col justify-between p-3 bg-gray-800 rounded-2xl hover:-translate-y-1 
     transition duration-300 w-66 cursor-pointer
     '>
@@ -31,15 +32,24 @@ scrollTo(0,0)
 
 </p>
 <div className='flex justify-between items-center mt-4 pb-3'>
-    <button  className='px-4 py-2 bg-red-700 hover:bg-red-800 cursor-pointer
+    <button    onClick={(e) => {
+    e.preventDefault();
+    e.stopPropagation();
+dispatch(setShow(movie))
+        
+    navigate(`/movie/${movie._id}/theaters`);
+     scrollTo(0,0);
+
+  }} className='px-4 py-2 bg-red-700 hover:bg-red-800 cursor-pointer
         font-medium rounded-full transition text-gray-300 text-xs'>Buy Ticket</button>
     <p className='flex items-center gap-1 text-sm text-gray-400 mt-1 pr-1'>
         <Star className='w-4 h-4 fill-red-700'/>
         {movie.vote_average.toFixed(1)}
     </p>
 </div>
+</div>
 
-    </div>
+
   )
 }
 
