@@ -4,3 +4,8 @@ export {default as MovieDetails} from './MovieDetails';
 export {default as MyBookings} from './MyBookings';
 export {default as SeatLayout} from './SeatLayout';
 export {default as Favourites} from './Favourites';
+export {default as AddShows} from "./admin/AddShows"
+export {default as Layout} from "./admin/Layout"
+export {default as Dashboard} from "./admin/Dashboard"
+export {default as ListBooking} from "./admin/ListBooking"
+export {default as ListShows} from "./admin/ListBooking"

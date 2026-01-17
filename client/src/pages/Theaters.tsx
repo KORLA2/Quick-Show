@@ -20,14 +20,14 @@ let handleTheater=(theaterId:number)=>{
 }
 
   return (
-    <div className=' px-6 md:px-16 relative lg:px-36 flex flex-col items-center rounded-lg '>
+    <div className=' px-10 md:px-16 relative lg:px-36 flex flex-col items-center rounded-lg '>
         <p className='mt-20 text-xl font-semibold text-gray-300'> Please Select Date and  Your  Favourite Theater</p>
         <SelectDate dateTime={dummyDateTimeData}  id={id as string}/>
       
-      <div className='bg-red-300/20 grid grid-col-3 gap-10   px-20 py-10  mt-10 '>
+      <div className='bg-red-300/20 grid grid-col-3 gap-10  rounded-xl  py-5 md:px-20 md:py-10  mt-10 '>
         {
                  dummyMovieTheaters[id as string].map((theater)=>
-                 <div key={theater.id} onClick={()=>handleTheater(theater.id)} className={`flex items-center transition   duration-300 justify-between gap-10 cursor-pointer  px-20 py-2  
+                 <div key={theater.id} onClick={()=>handleTheater(theater.id)} className={`flex max-md:flex-col max-md:gap-5 items-start md:items-center transition   duration-300 justify-between gap-10 cursor-pointer px-20 py-2  
               rounded-lg  ${theater.id==theaterId?'bg-green-500':""}
                  `}>
                        
