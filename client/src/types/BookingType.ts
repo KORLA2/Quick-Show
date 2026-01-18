@@ -12,6 +12,6 @@ export type BookingType={
 type showType={
     _id:string,
     movie:MovieType,
-    ShowDateTime:string,
+    showDateTime:string,
   showPrice:number
 }

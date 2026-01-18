@@ -8,7 +8,7 @@ import { IndianRupee } from 'lucide-react';
 
 const ListShows = () => {
 
-  let [loading,setLoading]=useState(false);
+  let [loading,setLoading]=useState(true);
   let [shows,setShows]=useState<ListShowType[]>([])
 
 let getAllShows=()=>{
@@ -38,7 +38,7 @@ let getAllShows=()=>{
 
 useEffect(()=>{
 getAllShows()
-
+setLoading(false)
 },[])
 
   return !loading?<>
