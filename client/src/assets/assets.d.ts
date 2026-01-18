@@ -12,3 +12,4 @@ export let dummyTrailers:TrailerType[]
 export let dummyDateTimeData:ShowDateTimeType
 export let dummyBookingData:BookingType[]
 export let dummyMovieTheaters:TheatersType;
+export let dummyDashboardData:DashBoardType;

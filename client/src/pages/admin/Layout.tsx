@@ -9,10 +9,12 @@ const Layout = () => {
         <div className='flex '>
 
         <AdminSideBar/>
-        <div className='flex-1 px-4 py-10 md:px-10 overflow-y-auto h-screen border border-red-500'>
+        <div className='flex-1 px-4 py-10  overflow-y-auto md:px-10 h-[calc(100vh-64px)] '>
 
         <Outlet/>
+
         </div>
+        
         </div>
 
         </>
