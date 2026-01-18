@@ -33,8 +33,8 @@ logo:PlusSquareIcon
 ]
 
   return (
-    <div className='h-[calc(100-64px)] md:flex flex-col items-center pt-8 max-w-13
-    w-full md:max-w-60 border border-gray-300/30 text-sm'>
+    <div className='h-[calc(100vh-64px)] md:flex flex-col items-center pt-8 max-w-13
+    w-full md:max-w-60 border border-gray-300/30 text-xl'>
     <img src={user.image} className='h-9 w-9 md:h-14 md:w-14 rounded-full mx-auto'/>
     <p className='text-base mt-2 max-md:hidden'> {user.firstname} {user.lastname}</p>
     <div className='w-full'>

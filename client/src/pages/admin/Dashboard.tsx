@@ -76,7 +76,7 @@ return !loading?<>
 {
     dashBoardData.activeShows.map((show)=>(
         <div key={show._id} className=' w-55 rounded-lg h-full pb-3 bg-red-700/60 hover:-translate-y-1
-        transition duration 300 overflow-hidden 
+        transition duration 300 overflow-hidden cursor-pointer
         '>
 <img src={show.movie.poster_path} className=' h-60 w-full rounded-xl object-cover'/>
 <p className='font-medium p-2 truncate'>{show.movie.title}</p>
