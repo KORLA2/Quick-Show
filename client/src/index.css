@@ -13,3 +13,10 @@ body{
 .no-scrollbar{
     scrollbar-width: none;
 }
+input::-webkit-inner-spin-button,::-webkit-outer-spin-button{
+    -webkit-appearance:none;
+}
+::-webkit-calendar-picker-indicator{
+    filter:invert(1);
+    font-size: larger;
+}
