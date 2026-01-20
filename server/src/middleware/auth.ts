@@ -1,7 +1,7 @@
 import type { RequestHandler } from "express";
 import { verifyToken } from "../controllers/token.js";
 import {pool } from "../db/connect.js"
-import  {signInSchema,signUpSchema} from "@app/schemas" 
+import  {signInSchema,signUpSchema} from "../schemas/auth.js"
 export let Protect:RequestHandler=async(req,res,next)=>{
 try{
 
