@@ -3,8 +3,8 @@ import { Eye,EyeClosed, XIcon } from 'lucide-react';
 import { useDispatch } from 'react-redux';
 import { setLogInUser, setSignIn } from '../../utils/authSlice';
 import { useForm } from 'react-hook-form';
-import {signInSchema,signUpSchema} from '../../schemas/auth.ts' 
-import type { AuthForm } from '../../schemas/auth.ts';
+import {signInSchema,signUpSchema} from '../../../packages/src/auth.ts' 
+import type { AuthForm } from '../../../packages/src/auth.ts';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Link, useNavigate } from 'react-router-dom';
 const Auth = () => {

@@ -1,7 +1,7 @@
 import express from 'express';
 import dotenv from "dotenv";
-import { ConnectDB } from '../db/connect';
-import { userRouter } from '../routes/userRoutes';
+import { ConnectDB } from './db/connect.js'
+import { userRouter } from './routes/userRoutes.js';
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
 
@@ -44,3 +44,5 @@ let start=async ()=>{
 
 
 start();
+
+export default app;

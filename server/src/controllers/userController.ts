@@ -1,8 +1,8 @@
 import type { RequestHandler } from "express"
 // import z from 'zod';
 
-import { pool } from "../db/connect";
-import { generateToken,verifyToken } from "./token";
+import { pool } from "../db/connect.js";
+import { generateToken,verifyToken } from "./token.js";
 import bcrypt from "bcryptjs"
 
 

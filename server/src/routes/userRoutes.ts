@@ -1,6 +1,6 @@
 import express from 'express';
-import { SignUpUser,SignInUser,GetProfile,SignOutUser} from '../controllers/userController.ts';
-import { Protect, Validate } from '../middleware/auth.ts';
+import { SignUpUser,SignInUser,GetProfile,SignOutUser} from '../controllers/userController.js';
+import { Protect, Validate } from '../middleware/auth.js';
 
 export let userRouter=express.Router();
 
