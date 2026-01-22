@@ -14,6 +14,7 @@ fetchUserInfo(dispatch)
 }
 
 let fetchUserInfo=async(dispatch:AppDispatch)=>{
+  let BACKEND_URL=import.meta.env.BACKEND_URL
     let user=await fetch("/api/user/auth/me",{
       credentials:"include"
     });

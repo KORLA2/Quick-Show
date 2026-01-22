@@ -27,7 +27,8 @@ try{
 
   let url=isSignIn?'/api/user/signIn':'/api/user/signUp';
   // console.log(url,JSON.stringify(data))
-
+  let BACKEND_URL=import.meta.env.VITE_BACKEND_URL
+console.log(BACKEND_URL+url)
   let postData=await fetch(url,{
     method:'POST',
     credentials:"include",
@@ -47,7 +48,7 @@ dispatch(setSignIn());
 }catch(err:any){
   console.log(err)
   setError("email",{
-    "message":err
+    "message":"Some thign Wrong Try Again "
   })
 }
 

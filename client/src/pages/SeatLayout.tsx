@@ -75,7 +75,7 @@ return (<button onClick={()=>handleClick(seatId)} className={`h-8 w-8 cursor-poi
 
 }
 
-  return show?<div className='flex flex-col md:flex-row   px-6 md:px-16 lg:px-30 py-30 md:pt-50'>
+  return show?<div className='flex flex-col md:flex-row   px-2 md:px-16 lg:px-30 py-30 md:pt-50'>
 
  <div className='bg-red-700/70 w-60 h-max py-10 rounded-lg border border-red-400/70 md:sticky md:top-30'>
  
@@ -99,15 +99,15 @@ return (<button onClick={()=>handleClick(seatId)} className={`h-8 w-8 cursor-poi
 
  </div>
 
-<div className='relative  flex-1   flex flex-col items-center max-md:mt-16'>
+<div className='relative  flex-1  overflow-x-auto py-5 flex flex-col items-center max-md:mt-16'>
   <BlurCircle top="-100px" left="-100px"/>
   <BlurCircle bottom="0px"right="0px" />
   <h1 className='text-2xl font-semibold mb-4 '>Select Your Seats</h1>
 <img src={assets.screenImage}/>
 
 <p className='text-xl text-gray-400 mb-6'>Screen This Side</p>
-<div className='flex flex-col items-center mt-10 gap-2 text-xs text-gray-300'>
- <div className='grid grid-cols-1 gap-8 md:gap-2 mb-6'>
+<div className='flex  flex-col items-center mt-10 gap-2 w-max  text-xs text-gray-300'>
+ <div className='grid grid-cols-1 gap-8 md:gap-2 mb-6 '>
 
 {groupRows[0].map((items)=>
 <div className='flex gap-2 items-center mt-2'><p className='text-lg font-semibold'>{items}</p> {renderSeats(items)} </div>
@@ -117,7 +117,7 @@ return (<button onClick={()=>handleClick(seatId)} className={`h-8 w-8 cursor-poi
 
 {
   groupRows.slice(1,5).map((group,idx)=>
-    <div className='space-y-4'>
+    <div className='space-y-4 '>
          { group.map(seat=>
                 renderSeats(seat)
           )
