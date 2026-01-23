@@ -102,18 +102,10 @@ if(!movieDetailsPromise.ok||!movieCastPromise.ok){
 
 let shows:string[]=[];
 
-showsInput.forEach(show=>{
-
-  let date=show.date;
-
-  show.times.forEach(time=>
-
-    shows.push(
-     `${date}T${time}`
-    )
-  )
-})
-
+shows=showsInput.flatMap(show=>
+   show.times.map(time=>`${show.date}T${time}`)
+)
+console.log(shows)
  await pool.query('BEGIN');
 
   transaction_started=true; 
