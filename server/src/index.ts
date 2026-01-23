@@ -4,7 +4,7 @@ import { ConnectDB, pool } from './db/connect.js'
 import { userRouter } from './routes/userRoutes.js';
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
-import { moviesRouter } from './routes/movieRoutes.js';
+import { showRouter } from './routes/showRoutes.js';
 
 dotenv.config();
 
@@ -24,7 +24,8 @@ app.use(express.json());
 app.use(cookieParser())
 
 app.use('/api/user',userRouter)
-app.use("/api/movies",moviesRouter)
+app.use("/api/show",showRouter)
+
 
 let start=async ()=>{
 
