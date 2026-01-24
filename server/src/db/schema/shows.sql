@@ -8,6 +8,11 @@ create table shows if not exists(
 create table if not exists seatsOccupied(
 showId uuid not null references shows(sid),
 seatId text not null,
-primary key(showId, seatId)
+uid uuid not null references users(uid)
+primary key(showId, seatId,uid)
 
 );
+
+
+
+

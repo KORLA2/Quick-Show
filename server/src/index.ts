@@ -6,6 +6,7 @@ import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import { showRouter } from './routes/showRoutes.js';
 import { adminRouter } from './routes/adminRoutes.js';
+import { checkSeatAvailability, checkSeatsCOntroller } from './controllers/bookingController.js';
 
 dotenv.config();
 
@@ -26,8 +27,10 @@ app.use(cookieParser())
 
 app.use('/api/user',userRouter)
 app.use('/api/admin',adminRouter)
+app.get('/booking',checkSeatsCOntroller)
 
 let start=async ()=>{
+
 
     try{
   
