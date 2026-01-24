@@ -133,3 +133,83 @@ catch(error:any){
 }
 
 } 
+
+
+export let getAllshowsController:RequestHandler= async(req,res)=>{
+ 
+ 
+  try{
+
+
+   let {rows}= await pool.query<{mid:number}>('select mid from shows where showdatetime >= $1 order by showdatetime desc',[new Date()])
+
+let uniqueShows=new Set(rows.map(row=>row.mid))
+
+res.status(200).json({
+  success:true,
+  shows:Array.from(uniqueShows)
+})
+  }
+  catch(error){
+
+    res.status(400).json({
+       message:error,
+       success:false
+    })
+  }
+
+}
+
+
+export let getShowController:RequestHandler=async(req,res)=>{
+  let {movieID}=req.params;
+  try{
+
+type ShowType={
+  sid:string,
+  showdatetime: Date,
+  mid:number,
+  showprice:number 
+}
+type dateTimeType={
+  
+}
+
+
+
+    let {rows}= await pool.query<ShowType>('select * from shows where mid=$1 and showdatetime>$2',[movieID,new Date()])
+      
+let movie=await pool.query('select * from movies where mid=$1',[movieID])
+
+let dateTime:{[key:string]:{
+  time:Date,
+  showId:string
+}[]}={}
+
+
+  rows.forEach(row=>{
+    let date=row.showdatetime.toISOString().split('T')[0];
+    if(!(date in dateTime)){
+        dateTime[date]=[]
+    }
+    dateTime[date].push({
+      time:row.showdatetime,
+      showId:row.sid
+    })
+
+  })
+
+  res.status(200).json({
+    succes:true,
+    movie,
+    dateTime
+  })
+
+
+  }catch(error){
+    res.json({
+      succes:false,
+      error
+    })
+  }
+}
