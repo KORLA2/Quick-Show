@@ -39,6 +39,7 @@ req.user={...user.rows[0]}
 
 export let Validate:RequestHandler=async (req,res,next)=>{
  let path=req.path; 
+ console.log(path)
  let schema =path=="/signIn"?signInSchema:signUpSchema;
     let result= schema.safeParse(req.body);
     console.log(result);

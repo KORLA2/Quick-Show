@@ -41,9 +41,12 @@ res.status(400).json({
 
 
 export let addShowController:RequestHandler=async(req,res)=>{
+  
   let transaction_started=false;
 try{
-
+if(!req.admin){
+  throw new Error("You are not Authorized to access this page")
+}
   
   let {movieId,showsInput,showPrice}:{movieId:string,showsInput:ShowsInput[],showPrice:number}=req.body
 
@@ -97,23 +100,12 @@ if(!movieDetailsPromise.ok||!movieCastPromise.ok){
       res.status(200).json({ success:true,mid:result.rows[0].mid});
    }
 
-   
-
 
 let shows:string[]=[];
 
-showsInput.forEach(show=>{
-
-  let date=show.date;
-
-  show.times.forEach(time=>
-
-    shows.push(
-     `${date}T${time}`
-    )
-  )
-})
-
+shows=showsInput.flatMap(show=>
+   show.times.map(time=>`${show.date}T${time}`)
+)
  await pool.query('BEGIN');
 
   transaction_started=true; 

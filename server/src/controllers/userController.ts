@@ -6,7 +6,7 @@ import { generateToken,verifyToken } from "./token.js";
 import bcrypt from "bcryptjs"
 
 
-let cookieOptions={
+export let cookieOptions={
 
   httpOnly: true,
   sameSite: "lax", // or "none" for cross-site
@@ -28,6 +28,7 @@ if(!name||!password||!email){
    return  res.status(404).json({
 
         message:"Email already exists"
+
     }
     )
   }
