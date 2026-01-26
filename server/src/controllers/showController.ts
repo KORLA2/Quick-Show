@@ -171,15 +171,10 @@ type ShowType={
   mid:number,
   showprice:number 
 }
-type dateTimeType={
-  
-}
-
-
 
     let {rows}= await pool.query<ShowType>('select * from shows where mid=$1 and showdatetime>$2',[movieID,new Date()])
       
-let movie=await pool.query('select * from movies where mid=$1',[movieID])
+let {rows:movie}=await pool.query('select * from movies where mid=$1',[movieID])
 
 let dateTime:{[key:string]:{
   time:Date,

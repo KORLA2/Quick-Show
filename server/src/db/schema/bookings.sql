@@ -3,7 +3,8 @@ create table if not exists bookings(
     uid uuid not null ,
     showId uuid not null,
     isPaid boolean default false,
+    total_price numeric(6,2) not null
     paymentLink text ,
-    bookeddate timetamp default now()
+    booked_date timetamp default now()
 );
 
