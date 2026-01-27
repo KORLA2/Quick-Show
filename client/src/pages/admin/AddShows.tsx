@@ -58,17 +58,17 @@ useEffect(()=>{
 },[])
   return nowPlayingmovies.length>0?<>
 <Title text1="Add" text2="Shows"/>
-<p className='mt-10 font-medium text-3xl'>Now Playing Movies</p>
-  <div className='pb-4 overflow-x-auto'>
-<div className='group flex flex-wrap  gap-4 mt-4 w-max'>
+<p className='mt-10 font-medium text-2xl'>Now Playing Movies</p>
+  <div className='pb-4 overflow-x-auto '>
+<div className='group flex flex-wrap gap-4 mt-4 w-max'>
   {
     nowPlayingmovies.map(movie=>(
       <div className={` relative max-w-50 cursor-pointer group-hover:not-hover:opacity-40 hover:-translate-y-1
       transition duration-300
       `}>
         <div  onClick={()=>setSelectedMovie(movie._id)} className='relative rounded-lg   overflow-hidden'>
-          <img src={movie.poster_path} className='object-cover w-full h-auto brightness-90'/>
-          <div className=' text-xl  font-medium flex items-center justify-between p-2 absolute bg-black/70 w-full bottom-0 left-0'>
+          <img src={movie.poster_path} className='object-cover w-40 h-auto brightness-90'/>
+          <div className=' text-sm truncate font-medium flex items-center justify-between  p-2 absolute bg-black/70 w-full bottom-0 left-0 right-0'>
             <p className='flex items-center gap-1 text-gray-400'> 
               <StarIcon className='w-4 h-4 text-red-600 fill-red-800'/>
               {movie.vote_average.toFixed(1)}</p>
@@ -91,14 +91,14 @@ useEffect(()=>{
 </div>
   </div>
   <div className='mt-8'>
-<label className='text-3xl  block   font-medium mb-2'>Show Price</label>
+<label className='text-xl  block   font-medium mb-2'>Show Price</label>
 <div className='inline-flex max-md:w-full  items-center md:gap-5  max-md:gap-1 border border-gray-600 px-3 py-2 rounded-md'>
-  <p className='text-gray-200 text-sm md:text-2xl text-nowrap'><IndianRupee/></p>
-  <input min={10} type="number" placeholder='Enter Show Price' value={showPrice} onChange={(e)=>setShowPrice(e.target.value)} className='outline-none md:text-2xl '/>
+  <p className='text-gray-200 text-xs md:text-xs text-nowrap'><IndianRupee className='h-5 w-5'/></p>
+  <input min={10} type="number" placeholder='Enter Show Price' value={showPrice} onChange={(e)=>setShowPrice(e.target.value)} className='outline-none md:text-lg '/>
 </div>
   </div>
   <div className='mt-6  '>
-    <p className='text-xl mb-2 font-medium'> Select Date And Time</p>
+    <p className='text-lg mb-2 font-medium'> Select Date And Time</p>
 <div className='inline-flex  max-md:w-full max-md:gap-2 gap-5 border border-gray-600  max-md:p-1 p-2 md:pl-3 rounded-lg'>
 <input type="datetime-local" value={dateTimeInput} onChange={(e)=>setdateTimeInput(e.target.value)} className='outline-none rounded-md'/>
 <button onClick={handleAddDateTime}  className='bg-red-700 text-white px-3 py-2 md:text-2xl rounded-lg hover:bg-red-900 transition cursor-pointer'>Add Time</button>

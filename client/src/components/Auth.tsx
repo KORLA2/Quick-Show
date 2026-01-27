@@ -57,8 +57,8 @@ dispatch(setSignIn());
 }
 
   return (
-    <div className='flex justify-center  p-10 flex-col items-center min-h-screen'>
-   <div className='p-10 md:w-1/2  max-md:w-full'>
+    <div className='flex justify-center p-5  md:p-10 flex-col items-center min-h-screen'>
+   <div className='md:p-10 md:w-1/2  max-md:w-full'>
       <div className='mb-5 flex justify-center'>
 
 <h1 className='text-center'>{isSignIn ? "Sign In" : "Sign Up"}</h1>

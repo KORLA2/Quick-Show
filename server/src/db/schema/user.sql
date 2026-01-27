@@ -6,3 +6,5 @@ password varchar(20) not null,
 created_at   timestamp default current_timestamp 
 
 )
+
+alter  table users add column theater_id uuid references theaters(theater_id)  set default null;

@@ -1,6 +1,7 @@
 import { RequestHandler } from "express";
 import { verifyToken } from "../controllers/token.js";
 import { pool } from "../db/connect.js";
+import { signInSchema, signUpSchema } from "../schemas/AdminAuth.js";
 
 
 
@@ -33,4 +34,21 @@ catch(err){
 }
 
   
+}
+
+export let AdminValidate:RequestHandler=(req,res,next)=>{
+let path=req.path;
+
+let schema=path==="/signIn"?signInSchema:signUpSchema;
+
+let result= schema.safeParse(req.body);
+console.log(result)
+if(!result.success)
+{
+
+   return   res.status(400).json({
+     "message":"Invalid Input"
+    })
+}
+next();
 }

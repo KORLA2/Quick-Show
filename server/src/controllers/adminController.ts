@@ -6,31 +6,53 @@ import { cookieOptions } from "./userController.js";
 
 export let adminSignUpController:RequestHandler=async(req,res)=>{
     
-let {name,email,password}=req.body
+let {name,email,password,area}=req.body
 
-   let result=await pool.query('select 1 from users where email=$1 and isAdmin=$2',[email,true]);
+try{
+   let result=await pool.query('select 1 from users where email=$1',[email]);
 if(result.rowCount as number ==1){
-    res.json({
+    res.status(400).json({
         message:"Email already exists please signIn"
     })
     return ;
 }
 
+await pool.query('BEGIN')
 
+let {rows:theater}=await pool.query('insert into theaters (theater_name,theater_area,rating) values($1,$2,$3) returning theater_id',[name,area,(Math.random()*5).toFixed(1)]);
+
+let tid=theater[0].theater_id;
+console.log(tid)
  let hashedPass=await bcrypt.hash(password,10)
 
-let adminid= await pool.query('insert into users (email,password,name,isAdmin) values($1,$2,$3,$4) returning uid',[email,hashedPass,name,true]);
 
-let token=generateToken(adminid.rows[0].uid);
+let {rows:admin}= await pool.query(`insert into users (email,password,theater_id,name,isAdmin) values($1,$2,$3,$4,$5) 
+  returning uid,created_at`,[email,hashedPass,tid,name,true]);
 
-res.cookie('admin-cookie',token,cookieOptions);
+let token=generateToken(admin[0].uid);
 
-res.status(201).json({
-    "message":"Admin Registerd successfully",
-    aid:adminid.rows[0].uid,
-    token
+res.cookie('admin-token',token,cookieOptions);
+
+await pool.query('COMMIT')
+
+res.status(200).json({
+    aid: admin[0].uid,
+   name:name,
+   email:email,
+   area:area,
+   createdAt:admin[0].created_at
+})
+}
+catch(error){
+
+  await pool.query('ROLLBACK');
+
+res.status(400).json({
+  succes:false,
+  message:error
 })
 
+}
 
 
 }
