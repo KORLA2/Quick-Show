@@ -41,9 +41,12 @@ res.status(400).json({
 
 
 export let addShowController:RequestHandler=async(req,res)=>{
+  
   let transaction_started=false;
 try{
-
+if(!req.admin){
+  throw new Error("You are not Authorized to access this page")
+}
   
   let {movieId,showsInput,showPrice}:{movieId:string,showsInput:ShowsInput[],showPrice:number}=req.body
 
@@ -97,15 +100,12 @@ if(!movieDetailsPromise.ok||!movieCastPromise.ok){
       res.status(200).json({ success:true,mid:result.rows[0].mid});
    }
 
-   
-
 
 let shows:string[]=[];
 
 shows=showsInput.flatMap(show=>
    show.times.map(time=>`${show.date}T${time}`)
 )
-console.log(shows)
  await pool.query('BEGIN');
 
   transaction_started=true; 
@@ -133,3 +133,78 @@ catch(error:any){
 }
 
 } 
+
+
+export let getAllshowsController:RequestHandler= async(req,res)=>{
+ 
+ 
+  try{
+
+
+   let {rows}= await pool.query<{mid:number}>('select mid from shows where showdatetime >= $1 order by showdatetime desc',[new Date()])
+
+let uniqueShows=new Set(rows.map(row=>row.mid))
+
+res.status(200).json({
+  success:true,
+  shows:Array.from(uniqueShows)
+})
+  }
+  catch(error){
+
+    res.status(400).json({
+       message:error,
+       success:false
+    })
+  }
+
+}
+
+
+export let getShowController:RequestHandler=async(req,res)=>{
+  let {movieID}=req.params;
+  try{
+
+type ShowType={
+  sid:string,
+  showdatetime: Date,
+  mid:number,
+  showprice:number 
+}
+
+    let {rows}= await pool.query<ShowType>('select * from shows where mid=$1 and showdatetime>$2',[movieID,new Date()])
+      
+let {rows:movie}=await pool.query('select * from movies where mid=$1',[movieID])
+
+let dateTime:{[key:string]:{
+  time:Date,
+  showId:string
+}[]}={}
+
+
+  rows.forEach(row=>{
+    let date=row.showdatetime.toISOString().split('T')[0];
+    if(!(date in dateTime)){
+        dateTime[date]=[]
+    }
+    dateTime[date].push({
+      time:row.showdatetime,
+      showId:row.sid
+    })
+
+  })
+
+  res.status(200).json({
+    succes:true,
+    movie,
+    dateTime
+  })
+
+
+  }catch(error){
+    res.json({
+      succes:false,
+      error
+    })
+  }
+}

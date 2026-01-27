@@ -4,7 +4,8 @@ import { ConnectDB, pool } from './db/connect.js'
 import { userRouter } from './routes/userRoutes.js';
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
-import { showRouter } from './routes/showRoutes.js';
+import { adminRouter } from './routes/adminRoutes.js';
+import { bookingsRouter } from './routes/bookingRoutes.js';
 
 dotenv.config();
 
@@ -24,10 +25,11 @@ app.use(express.json());
 app.use(cookieParser())
 
 app.use('/api/user',userRouter)
-app.use("/api/show",showRouter)
-
+app.use('/api/admin',adminRouter)
+app.use("/api/bookings",bookingsRouter)
 
 let start=async ()=>{
+
 
     try{
   

@@ -430,7 +430,7 @@ export const dummyDateTimeData = {
 export const dummyDashboardData = {
     "totalBookings": 14,
     "totalRevenue": 1517,
-        "totalUser": 5,
+        "totalUsers": 5,
         "activeShows": [
             {
                 "_id": "68352363e96d99513e4221a4",

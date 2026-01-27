@@ -7,10 +7,12 @@ import { useUser } from '../src/customhooks/useUser'
 import type { RootState } from '../utils/store'
 import { Toaster } from 'react-hot-toast'
 import Theaters from './pages/Theaters'
+import AdminAuth from './components/admin/AdminAuth'
 const App = () => {
   let signIn=useSelector((store:RootState)=>store.auth.signIn);
 useUser();
 
+let isAdmin=useSelector((store:RootState)=>store.admin.Admin);
 let {pathname}=useLocation();
 
 
@@ -21,7 +23,7 @@ let isAdminRoute=pathname.includes("/admin")
 <div>
 
 {
-signIn &&<div className='backdrop-blur  bg-black/10 z-10 top-0 left-0 right-0 bottom-0 absolute '>
+signIn &&<div className='backdrop-blur  bg-black/10 z-11 top-0 left-0 right-0 bottom-0 absolute '>
 
 <Auth/>
 </div>
@@ -37,10 +39,13 @@ signIn &&<div className='backdrop-blur  bg-black/10 z-10 top-0 left-0 right-0 bo
 <Route path='/movie/:id/theaters' element={<Theaters/>}/>
 <Route path='/favourites' element={<Favourites/>} />
 <Route path="/admin/*" element={<Layout/>}>
-<Route index element={<Dashboard/>}/>
+
+{!isAdmin&&<Route path="auth" element={<AdminAuth/>}/>}
+  {isAdmin&&<><Route index element={<Dashboard/>}/>
 <Route path="add-shows" element={<AddShows/>}/>
 <Route path="list-shows" element={<ListShows/>} />
-<Route path="list-bookings" element={<ListBooking/>}/>
+<Route path="list-bookings" element={<ListBooking/>}/></>
+}
 </Route>
 <Route path='*' element={<div>404 path not found</div>}/>
 </Routes>

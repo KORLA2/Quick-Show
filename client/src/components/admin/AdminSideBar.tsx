@@ -45,8 +45,8 @@ logo:PlusSquareIcon
              {
                 ({isActive})=>(
                     <>
-                        <links.logo className='w-5 h-5 max-md:h-10 '/>
-                        <p className='whitespace-nowrap max-md:hidden'>{links.name}</p>
+                        <links.logo className='w-4 h-4 max-md:h-10 '/>
+                        <p className='whitespace-nowrap max-md:hidden text-sm'>{links.name}</p>
                         <span className={`absolute right-0 h-10 w-1.5 rounded-lg ${isActive?'bg-red-600':''}`}/>
                     </>
                 )

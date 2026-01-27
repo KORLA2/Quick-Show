@@ -6,7 +6,7 @@ import { generateToken,verifyToken } from "./token.js";
 import bcrypt from "bcryptjs"
 
 
-let cookieOptions={
+export let cookieOptions={
 
   httpOnly: true,
   sameSite: "lax", // or "none" for cross-site
@@ -28,6 +28,7 @@ if(!name||!password||!email){
    return  res.status(404).json({
 
         message:"Email already exists"
+
     }
     )
   }
@@ -94,7 +95,7 @@ export let SignOutUser:RequestHandler=async(req,res)=>{
 
 
 export let GetProfile:RequestHandler=async(req,res)=>{
- 
+ console.log(req.user)
   if(!req.user){
   return res.status(200).json({
     message:"Your Profile Not found"
@@ -107,3 +108,112 @@ return res.status(200).json({
 })
 
 }
+
+
+export let getMyBookings:RequestHandler=async(req,res)=>{
+
+try{
+let {uid}=req.user;
+  let {rows:my_bookings}=await pool.query(`select 
+  b.booked_date,
+  b.uid,
+  m.title,
+  sh.showdatetime,
+  array_agg(s.seatid order by s.seatid) as seats
+from bookings b
+join shows sh 
+  on sh.sid = b.showid
+join movies m 
+  on m.mid = sh.mid
+join seatsoccupied s 
+  on s.showid = b.showid
+where b.uid = $1
+group by 
+  b.booked_date,
+  b.uid,
+  m.title,
+  sh.showdatetime
+order by 
+  sh.showdatetime desc;
+`,[uid]);
+
+res.status(200).json({
+success:true,
+my_bookings
+});
+}
+catch(error){
+res.status(200).json({
+  success:true,
+  message:error
+})
+}
+
+}
+export let addFavouriteMovies:RequestHandler=async(req,res)=>{
+  try{
+
+let {movieId}=req.body;
+let {uid}=req.user;
+
+  let {rows:fav}=await pool.query('insert into favourites (uid,mid) values($1,$2) returning mid',[uid,movieId])  
+
+res.status(200).json({
+success:true,
+fav
+})
+  }
+
+  catch(error){
+  res.status(200).json({
+    success:true,
+    message:error
+  })
+  }
+
+}
+
+export let deleteFavouriteMovie:RequestHandler=async(req,res)=>{
+try{
+  let {movieId}=req.body;
+let {uid}=req.user;
+
+ let {rows:deleted}=await pool.query(`delete from favourites where uid=$1 and mid=$2`,[uid,movieId])
+
+
+ res.status(200).json({
+  succes:true,
+  deleted
+ })
+}catch(error){
+  res.status(200).json({
+    success:true,
+    message:error
+  })
+}
+}
+
+
+export let getFavouriteMovies:RequestHandler=async(req,res)=>{
+  try{
+let {uid}=req.user;
+
+
+    let {rows:favmovies}=await pool.query('select m.* from movies m join favourites f on m.mid=f.mid where f.uid=$1',[uid]);
+
+    res.status(200).json({
+      succes:true,
+      favmovies
+    })
+
+  }catch(error){
+  res.status(200).json({
+      success:true,
+      message:error
+    })
+  }
+
+
+}
+
+
