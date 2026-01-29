@@ -26,8 +26,8 @@ console.log(tid)
  let hashedPass=await bcrypt.hash(password,10)
 
 
-let {rows:admin}= await pool.query(`insert into users (email,password,theater_id,name,isAdmin) values($1,$2,$3,$4,$5) 
-  returning uid,created_at`,[email,hashedPass,tid,name,true]);
+let {rows:admin}= await pool.query(`insert into users (email,password,theater_id,name,isAdmin,uid) values($1,$2,$3,$4,$5,$6) 
+  returning uid,created_at`,[email,hashedPass,tid,name,true,tid]);
 
 let token=generateToken(admin[0].uid);
 

@@ -4,21 +4,22 @@ import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { signInSchema, signUpSchema, type AuthType } from '../../schemas/AdminAuth'
 import { useNavigate } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { setAdmin } from '../../../utils/adminSlice'
+import type { RootState } from '../../../utils/store'
 
 const AdminAuth = () => {
 
 let [isSignUp,setSignUp]=useState(true)
 let [show,setShow]=useState(false)
 let [conShow,setConShow]=useState(false)
-let navigate=useNavigate();
 let dispatch=useDispatch();
 let schema=isSignUp?signUpSchema:signInSchema;
 let {register,handleSubmit,formState:{errors,isSubmitting},setError,reset}=useForm<AuthType>({
   resolver:zodResolver(schema),mode:"onChange"
 })
-
+let navigate=useNavigate();
+console.log('AdminAuth ')
 useEffect(()=>{reset()},[isSignUp])
 let handleForm=async (data:AuthType)=>{
 try{

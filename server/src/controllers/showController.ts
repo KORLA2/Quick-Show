@@ -11,8 +11,7 @@ let options={
   }
 
   type ShowsInput={
-   date:string,
-   times:string[]
+[key:string]:string[]
   }
 
 export let getNowPlayingMovies:RequestHandler= async(req,res)=>{
@@ -22,6 +21,7 @@ try{
   const url = 'https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1';
 
   let playingmoviespromise=await fetch(url,options);
+  console.log(playingmoviespromise)
 let  now_playing=await playingmoviespromise.json();
 res.status(200).json({
   success:true,
@@ -42,25 +42,34 @@ res.status(400).json({
 
 export let addShowController:RequestHandler=async(req,res)=>{
   
-  let transaction_started=false;
+  let client= await pool.connect();
+ 
 try{
 if(!req.admin){
   throw new Error("You are not Authorized to access this page")
 }
-  
-  let {movieId,showsInput,showPrice}:{movieId:string,showsInput:ShowsInput[],showPrice:number}=req.body
+
+ console.log(req.admin.uid) 
+let {movieId,showsInput,showPrice}:{movieId:string,showsInput:ShowsInput,showPrice:number}=req.body
+await pool.query('BEGIN');
 
 
-  let result=await pool.query('select 1 from movies where mid=$1',[movieId]);
-
+  let result=await client.query('select 1 from movies where mid=$1',[movieId]);
+console.log(result)
 if(!result.rowCount){   
 
-   let [movieDetailsPromise,movieCastPromise]= await Promise.all([ fetch(`https://api.themoviedb.org/3/movie/${movieId}`,options),
+  console.log('HEllo')
+   let movieDetailsPromise= await  fetch(`https://api.themoviedb.org/3/movie/${movieId}`,options)
     
-    fetch(`https://api.themoviedb.org/3/movie/${movieId}/credits`,options)]);
+   if(!movieDetailsPromise.ok){
+  throw new Error("TMDB fetch error")
+
+   } 
+
+   let movieCastPromise=await fetch(`https://api.themoviedb.org/3/movie/${movieId}/credits`,options);
 
 
-if(!movieDetailsPromise.ok||!movieCastPromise.ok){
+if(!movieCastPromise.ok){
   throw new Error("TMDB fetch error")
 }
 
@@ -82,8 +91,7 @@ if(!movieDetailsPromise.ok||!movieCastPromise.ok){
         $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11
        ) returning mid`
 
-
-   let result=    await pool.query(SQLQuery,[movieId,
+   let result= await client.query(SQLQuery,[movieId,
         movieDetails.title,
         movieDetails.overview,
         movieDetails.poster_path,
@@ -97,22 +105,28 @@ if(!movieDetailsPromise.ok||!movieCastPromise.ok){
       ])
 
       console.log(result)
-      res.status(200).json({ success:true,mid:result.rows[0].mid});
+     
    }
 
 
 let shows:string[]=[];
 
-shows=showsInput.flatMap(show=>
-   show.times.map(time=>`${show.date}T${time}`)
-)
- await pool.query('BEGIN');
+console.log(showsInput)
 
-  transaction_started=true; 
-console.log(shows)
- await Promise.all(shows.map(show=> pool.query('insert into shows (mid,showdatetime,showprice) values($1,$2,$3)',[movieId,show,showPrice])))
+shows=Object.entries(showsInput).flatMap(show=>
+   show[1].map(time=>`${show[0]}T${time}`)
+)
+
+
+console.log(movieId)
+ await Promise.all(shows.map(show=> client.query('insert into shows (mid,showdatetime,showprice) values($1,$2,$3)',[movieId,show,showPrice])))
  
- await pool.query('COMMIT')
+console.log(req.admin.uid);
+
+let result1= await client.query('insert into theater_movies (tid,mid) values($1,$2)',[req.admin.uid,Number(movieId)])
+console.log(result1)
+
+ await client.query('COMMIT')
 
   res.status(200).json({
     success:true,
@@ -122,9 +136,9 @@ console.log(shows)
 }
 catch(error:any){
 
-  if(transaction_started)
-   await pool.query('ROLLBACK')
+   await client.query('ROLLBACK')
 
+  console.log(error)
   res.status(400).json({
     success:false,
     message:error.message,

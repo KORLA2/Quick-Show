@@ -6,6 +6,7 @@ import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import { adminRouter } from './routes/adminRoutes.js';
 import { bookingsRouter } from './routes/bookingRoutes.js';
+import { showRouter } from './routes/showRoutes.js';
 
 dotenv.config();
 
@@ -25,7 +26,8 @@ app.use(express.json());
 app.use(cookieParser())
 
 app.use('/api/user',userRouter)
-app.use('/api/admin',adminRouter)
+app.use('/api/admin',adminRouter);
+app.use("/api/shows",showRouter)
 app.use("/api/bookings",bookingsRouter)
 
 let start=async ()=>{

@@ -3,10 +3,12 @@ import type{MovieType} from "../src/types/MovieType"
 
 type showType={
     show:MovieType|null
+    nowplaying:MovieType[]|[]
 }
 
 let initialState:showType={
-    show:null
+    show:null,
+   nowplaying:[]
 }
 
 let movieSlice=createSlice({
@@ -15,6 +17,10 @@ initialState,
  reducers:{
   setShow:(state,action)=>{
     state.show=action.payload
+  },
+  setNowPlayingMovies:(state,action)=>{
+  state.nowplaying=action.payload  
+  
   }
 
  },
@@ -22,5 +28,5 @@ initialState,
 
 });
 
-export let {setShow}=movieSlice.actions;
+export let {setShow,setNowPlayingMovies}=movieSlice.actions;
 export default movieSlice.reducer;

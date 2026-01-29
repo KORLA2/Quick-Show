@@ -10,6 +10,8 @@ adminRouter.post('/signIn',AdminValidate,adminSignInController);
 adminRouter.get("/dashboard",protectAdmin,getDashBoardController)
 adminRouter.get("/allshows",protectAdmin,getAllShows);
 adminRouter.get('/allbookings',protectAdmin,getAllBookings)
+adminRouter.use("/auth",protectAdmin,(req,res)=>{
 
-adminRouter.use("/show",showRouter)
+    res.json(req.admin)
+})
 

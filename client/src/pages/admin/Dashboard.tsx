@@ -6,7 +6,15 @@ import type { ShowType } from '../../types/DashBoardType';
 import Title from '../../components/admin/Title';
 import BlurCircle from '../../components/BlurCircle';
 import { dateFormat } from '../../dateTimeFormat';
+import { useSelector } from 'react-redux';
+import type { RootState } from '../../../utils/store';
+import { useNavigate } from 'react-router-dom';
 const Dashboard = () => {
+
+let isAdmin=useSelector((store:RootState)=>store.admin.Admin);
+let navigate=useNavigate();
+
+
 
     let activeShows:ShowType[]=[]
 let [dashBoardData,setDashBoardData]=useState({

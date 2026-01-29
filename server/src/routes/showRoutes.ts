@@ -4,7 +4,7 @@ import {protectAdmin} from "../middleware/protectAdmin.js"
 
 export let showRouter=express.Router();
 
-showRouter.get("/now-playing",protectAdmin,getNowPlayingMovies);
+showRouter.get("/now-playing",getNowPlayingMovies);
 showRouter.post("/addshow",protectAdmin,addShowController);
 showRouter.get("/allshows",protectAdmin,getAllshowsController);
 showRouter.get("/:movieID",protectAdmin,getShowController);

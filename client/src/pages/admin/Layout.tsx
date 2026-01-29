@@ -5,22 +5,16 @@ import BlurCircle from '../../components/BlurCircle'
 import { useSelector } from 'react-redux'
 import type { RootState } from '../../../utils/store'
 
+
 const Layout = () => {
-let isAdmin=useSelector((store:RootState)=>store.admin.Admin);
-
-  let navigate=useNavigate();
-useEffect(()=>{
-if(!isAdmin){navigate("/admin/auth")}
-else navigate("/admin")
-
-})
+let Admin=useSelector((store:RootState)=>store.admin.Admin)
 
   return (
     <>
         <AdminNavbar/>
         <div className='flex '>
 
-        {isAdmin&&<AdminSideBar/>}
+       { Admin&&<AdminSideBar/>}
         <div className='flex-1 px-4 py-10 relative  overflow-y-auto md:px-10 max-h-[calc(100vh-64px)] '>
   <BlurCircle bottom='0px' right="0px"/>
         <Outlet/>
