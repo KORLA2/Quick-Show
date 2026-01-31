@@ -5,40 +5,35 @@ import { dummyShowsData } from '../../assets/assets';
 import type { ListShowType } from '../../types/ListShowType';
 import { dateFormat } from '../../dateTimeFormat';
 import { IndianRupee } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 const ListShows = () => {
 
   let [loading,setLoading]=useState(true);
   let [shows,setShows]=useState<ListShowType[]>([])
 
-let getAllShows=()=>{
+let getAllShows=async()=>{
 
-  setShows([{
-      movie:dummyShowsData[0],
-  showDateTime:"2025-07-24T01:00:00.000Z",
-    showPrice:56,
-    occupiedSeats:{
-      A1:'akhil',
-      B1:'Goutham',
-      C1:'Mummy'
-    }
-    },{
-      movie:dummyShowsData[0],
-  showDateTime:"2025-07-24T01:00:00.000Z",
-    showPrice:56,
-    occupiedSeats:{
-      A1:'akhil',
-      B1:'Goutham',
-      C1:'Mummy'
-    }
-    }
-    
-  ])
+  try{
+let data= await fetch('/api/admin/allshows')
+
+let  jsondata= await data.json();
+
+console.log(jsondata)
+ setShows(jsondata.latest_shows);
+
+toast.success("List of all shows in your theater");
+
+  }
+  catch(error){
+toast.error("Some thing Wrong")
+  }
+setLoading(false);
 }
 
 useEffect(()=>{
-getAllShows()
-setLoading(false)
+ getAllShows()
+
 },[])
 
   return !loading?<>
@@ -56,12 +51,12 @@ setLoading(false)
         </tr>
       </thead>
       <tbody className='text-sm font-medium'>
-     {   shows.map((show,idx)=>
+     {   shows?.map((show,idx)=>
         <tr key={idx} className='border-b border-red-500/50 bg-red-700/20 text-center even:bg-red-700/40'>
-          <td className='p-2 min-w-45 pl-5 '>{show.movie.title}</td>
+          <td className='p-2 min-w-45 pl-5 '>{show.movie?.title}</td>
           <td className='p-2 border-l border-white text-left'>{dateFormat(show.showDateTime)}</td>
-          <td className='p-2 border-l border-white text-left'>{Object.keys(show.occupiedSeats).length}</td>
-          <td className='p-2 border-l border-white text-left flex items-center'><IndianRupee className='w-4 h-4'/>{Object.keys(show.occupiedSeats).length *show.showPrice}</td>
+          <td className='p-2 border-l border-white text-left'>{show.totalBookings}</td>
+          <td className='p-2 border-l border-white text-left flex items-center'><IndianRupee className='w-4 h-4'/>{show.earnings}</td>
         </tr>
      )
      }

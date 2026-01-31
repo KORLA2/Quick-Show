@@ -160,16 +160,29 @@ try{
 let {rows:latest_shows}= await pool.query(`
   select
   s.sid,
-  m.title as movie_name,
+  m.title,
   s.showdatetime,
   count(st.seatid) as total_bookings,
   coalesce(count(st.seatid) * s.showprice, 0) as total_revenue
 from shows s
 join movies m on m.mid = s.mid
-left join seatsoccupied st on st.showid = s.sid
+left join seatsoccupied st on st.showid = s.sid 
+where s.tid=$1
 group by s.sid, m.title, s.showdatetime, s.showprice
 order by s.showdatetime asc;
-  `);
+  `,[req.admin.uid]);
+
+
+  latest_shows=latest_shows.map((show)=>({
+movie:{
+  title:show.title
+},
+showDateTime:show.showdatetime,
+totalBookings:show.total_bookings,
+earnings:show.total_revenue,
+
+  }));
+
 
       res.status(200).json({
       success:true, 
