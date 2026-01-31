@@ -4,18 +4,31 @@ import type { BookingType } from '../../types/BookingType';
 import Loading from '../../components/Loading';
 import Title from '../../components/admin/Title';
 import { dateFormat } from '../../dateTimeFormat';
+import toast from 'react-hot-toast';
 
 const ListBooking = () => {
 let [loading,setLoading]=useState(true);
 let [bookingData,setBookingData]=useState<BookingType[]>([])
 
-let getBookingsData=()=>{
-  setBookingData(dummyBookingData)
+let getBookingsData=async()=>{
+  // setBookingData(dummyBookingData)
+
+  try{
+
+    let data=await fetch("/api/admin/allbookings");
+    let jsondata=await data.json();
+console.log(jsondata);
+setBookingData(jsondata.total_bookings)
+toast.success("List of all bookings")
+  }
+catch(error){
+
+  toast.error("Something went wrong")
+}
   setLoading(false)
 }
 useEffect(()=>{
   getBookingsData()
-  setLoading(false);
 
 },[])
   return !loading?<>

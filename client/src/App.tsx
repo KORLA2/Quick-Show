@@ -12,11 +12,13 @@ import { useAdmin } from './customhooks/useAdmin'
 import { AdminOnly} from './pages/admin/AdminOnly'
 import {GuestOnly } from './pages/admin/GuestOnly'
 import { useMovies } from './customhooks/useMovies'
+import useFavourites from './customhooks/useFavourites'
 const App = () => {
   let signIn=useSelector((store:RootState)=>store.auth.signIn);
 useUser();
 useAdmin();
 useMovies();
+useFavourites()
 let {pathname}=useLocation();
 let Admin=useSelector((store:RootState)=>store.admin.Admin)
 

@@ -4,11 +4,13 @@ import type{MovieType} from "../src/types/MovieType"
 type showType={
     show:MovieType|null
     nowplaying:MovieType[]|[]
+    favourites:MovieType[]|[]
 }
 
 let initialState:showType={
     show:null,
-   nowplaying:[]
+   nowplaying:[],
+   favourites:[]
 }
 
 let movieSlice=createSlice({
@@ -21,6 +23,10 @@ initialState,
   setNowPlayingMovies:(state,action)=>{
   state.nowplaying=action.payload  
   
+  },
+
+  myFavouriteMovies:(state,action)=>{
+state.favourites=action.payload
   }
 
  },
@@ -28,5 +34,5 @@ initialState,
 
 });
 
-export let {setShow,setNowPlayingMovies}=movieSlice.actions;
+export let {setShow,setNowPlayingMovies,myFavouriteMovies}=movieSlice.actions;
 export default movieSlice.reducer;

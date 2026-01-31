@@ -126,7 +126,7 @@ return rest;
           <div className=' text-sm truncate font-medium flex items-center justify-between w-40  p-2 absolute bg-black/70  bottom-0 left-0 right-0'>
             <p className='flex items-center gap-1 text-gray-400'> 
               <StarIcon className='w-4 h-4 text-red-600 fill-red-800'/>
-              {movie.vote_average.toFixed(1)}</p>
+              {Number(movie.vote_average).toFixed(1)}</p>
               <p className='text-gray-200'>{(movie.vote_count/1000).toFixed(1)+'K'} Votes</p>
             </div>
           </div>

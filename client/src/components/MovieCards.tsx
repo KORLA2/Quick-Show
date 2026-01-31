@@ -44,7 +44,7 @@ dispatch(setShow(movie))
         font-medium rounded-full transition text-gray-300 text-xs'>Buy Ticket</button>
     <p className='flex items-center gap-1 text-sm text-gray-400 mt-1 pr-1'>
         <Star className='w-4 h-4 fill-red-700'/>
-        {movie.vote_average.toFixed(1)}
+        {Number(movie.vote_average).toFixed(1)}
     </p>
 </div>
 </div>

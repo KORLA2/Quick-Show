@@ -157,14 +157,15 @@ export let addFavouriteMovies:RequestHandler=async(req,res)=>{
 
 let {movieId}=req.body;
 let {uid}=req.user;
-
+console.log(uid+"UID")
   let {rows:fav}=await pool.query('insert into favourites (uid,mid) values($1,$2) returning mid',[uid,movieId])  
 
 res.status(200).json({
 success:true,
 fav
 })
-  }
+  
+}
 
   catch(error){
   res.status(200).json({
@@ -202,6 +203,12 @@ let {uid}=req.user;
 
 
     let {rows:favmovies}=await pool.query('select m.* from movies m join favourites f on m.mid=f.mid where f.uid=$1',[uid]);
+ console.log(favmovies);
+
+favmovies=favmovies.map((movie)=>({
+...movie,
+id:movie.mid
+}))
 
     res.status(200).json({
       succes:true,
@@ -209,7 +216,8 @@ let {uid}=req.user;
     })
 
   }catch(error){
-  res.status(200).json({
+    console.log(error)
+  res.status(400).json({
       success:true,
       message:error
     })

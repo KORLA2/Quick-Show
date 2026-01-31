@@ -11,7 +11,7 @@ userRouter.get("/signOut",Protect,SignOutUser);
 userRouter.get("/mybookings",Protect,getMyBookings);
 userRouter.post("/addfavourite",Protect,addFavouriteMovies);
 userRouter.post("/delfavourite",Protect,deleteFavouriteMovie);
-userRouter.post('/favourites',Protect,getFavouriteMovies);
+userRouter.get('/favourites',Protect,getFavouriteMovies);
 userRouter.get("/auth/me",Protect,(req,res)=>{
     res.json(req.user)
 });

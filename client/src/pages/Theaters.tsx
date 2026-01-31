@@ -8,14 +8,14 @@ import { setGTheater } from '../../utils/theaterSlice';
 import { useSelector } from 'react-redux'
 import type { RootState } from '../../utils/store'
 import type { Theater } from '../types/TheatersType';
+import { setdatetime } from '../../utils/showSlice';
 
 const Theaters = () => {
     let {id}=useParams();
     let dispatch=useDispatch();
 let [theaters,setTheaters]=useState<Theater[]>([])
-
 let theaterId=useSelector((store:RootState)=>store.theater.theaterId)
-
+let dateTime=useSelector((store:RootState)=>store.show.datetime)
 async function fetchMovieTheaters(id:string){
 
 try{
@@ -33,10 +33,26 @@ console.log(err)
 
 } 
 
+async function fetchShows(){
+
+  try{
+ let data=await fetch(`/api/shows/${id}`);
+ let jsondata=await data.json();
+ console.log(jsondata)
+ dispatch(setdatetime(jsondata.dateTime))
+  }
+  catch(error){
+console.log(error)
+  }
+}
+
 console.log(theaters)
+
+
+
   useEffect(()=>{
     
-
+fetchShows();
   fetchMovieTheaters(id as string)
 
   },[])
@@ -50,7 +66,7 @@ let handleTheater=(theaterId:string)=>{
   return (
     <div className=' px-10 md:px-16 relative lg:px-36 flex flex-col items-center rounded-lg '>
       { theaters.length?(<> <p className='mt-20 text-xl font-semibold text-gray-300'> Please Select Date and  Your  Favourite Theater</p>
-        <SelectDate dateTime={dummyDateTimeData}  id={id as string}/>
+        <SelectDate dateTime={dateTime}  id={id as string}/>
       
       <div className='bg-red-300/20    rounded-xl  py-5 md:px-20 md:py-10  mt-10 '>
         {

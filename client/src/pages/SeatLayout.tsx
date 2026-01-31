@@ -8,6 +8,7 @@ import Loading from '../components/Loading';
 import { ArrowRightIcon, Clock4Icon } from 'lucide-react';
 import BlurCircle from '../components/BlurCircle';
 import toast from 'react-hot-toast';
+import type { ShowDateTimeType } from '../types/SHowDateTimeType';
 
 
 const SeatLayout = () => {
@@ -19,6 +20,7 @@ let {id,date}=useParams();
 let [show,setShow]=useState<ShowState|null>(null)
 let [selectedTime,setSelectedTime]=useState<string|null>(null)
 let selectedMovie=useSelector((store:RootState)=>store.movie.show);
+let dateTime:ShowDateTimeType=useSelector((store:RootState)=>store.show.datetime)
 
 let handleCheckOut=()=>{
   if(selectedSeats.length==0)
@@ -29,13 +31,7 @@ let handleCheckOut=()=>{
 
 let getShow=()=>{
 
-if(selectedMovie){
-setShow({
-  movie:selectedMovie,
-  dateTime:dummyDateTimeData
-})
 
-}
 
 }
 
@@ -75,14 +71,14 @@ return (<button onClick={()=>handleClick(seatId)} className={`h-8 w-8 cursor-poi
 
 }
 
-  return show?<div className='flex flex-col md:flex-row   px-2 md:px-16 lg:px-30 py-30 md:pt-50'>
+  return <div className='flex flex-col md:flex-row   px-2 md:px-16 lg:px-30 py-30 md:pt-50'>
 
  <div className='bg-red-700/70 w-60 h-max py-10 rounded-lg border border-red-400/70 md:sticky md:top-30'>
  
  <p className='font-semibold px-6 text-lg '>Available Timings</p>
  <div className='mt-5 space-y-1'>
 {
-  show.dateTime[date as string].map((time)=>
+  dateTime[date as string].map((time)=>
   <div onClick={()=>setSelectedTime(time.time)} className={`flex items-center gap-2 px-6 py-2 rounded-md cursor-pointer transition  duration-150
   ${selectedTime===time.time?'bg-green-500':''}
   `}>
@@ -140,7 +136,7 @@ return (<button onClick={()=>handleClick(seatId)} className={`h-8 w-8 cursor-poi
   <ArrowRightIcon className='group-hover:translate-x-0.5' />
 </button>
 </div>
-  </div>:<Loading/>
+  </div>
 }
 
 export default SeatLayout

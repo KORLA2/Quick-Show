@@ -7,9 +7,8 @@ try{
 
   let token=req.cookies.token;
   if(!token){
-    throw new Error("User Not authorized Please log in again")}
+    throw new Error("Your are not authorized Please log in again")}
   let decoded= verifyToken(token);
-  console.log(decoded)
   if(typeof decoded === "string"|| !("uid" in decoded)){
 
     throw new Error("User Not authorized Please log in again");
@@ -23,13 +22,15 @@ try{
       })
     }
 
+   
 
 req.user={...user.rows[0]}
+ 
 
     next();
   }catch(err){
     res.status(404).json({
-   message:"THe Error is "+ err
+   message: err
 
     })
   }

@@ -1,44 +1,10 @@
 import type { RequestHandler } from "express";
 import { pool } from "../db/connect.js";
 
-
-let options={
-    method:"GET",
-    headers:{
-      accept:'application/json',
-      authorization:`Bearer ${process.env.TMDB_APIKEY}`
-    }
-  }
-
-  type ShowsInput={
+type ShowsInput={
 [key:string]:string[]
-  }
-
-export let getNowPlayingMovies:RequestHandler= async(req,res)=>{
-
-  
-try{
-  const url = 'https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1';
-
-  let playingmoviespromise=await fetch(url,options);
-
-  console.log(playingmoviespromise)
-let  now_playing=await playingmoviespromise.json();
-res.status(200).json({
-  success:true,
-  movies:now_playing.results
-});
-
-}
-catch(err:any){
-res.status(400).json({
-  success:false,
-  message:err.message
-})
-
 }
 
-}
 
 
 export let addShowController:RequestHandler=async(req,res)=>{
@@ -46,69 +12,12 @@ export let addShowController:RequestHandler=async(req,res)=>{
   let client= await pool.connect();
  
 try{
-if(!req.admin){
-  throw new Error("You are not Authorized to access this page")
-}
+  // Movie already added to DB so directly adding a show to theater
 
- console.log(req.admin.uid) 
 let {movieId,showsInput,showPrice}:{movieId:string,showsInput:ShowsInput,showPrice:number}=req.body
-await pool.query('BEGIN');
+await client.query('BEGIN');
 
-
-  let result=await client.query('select 1 from movies where mid=$1',[movieId]);
-console.log(result)
-if(!result.rowCount){   
-
-  console.log('HEllo')
-   let movieDetailsPromise= await  fetch(`https://api.themoviedb.org/3/movie/${movieId}`,options)
-    
-   if(!movieDetailsPromise.ok){
-  throw new Error("TMDB fetch error")
-
-   } 
-
-   let movieCastPromise=await fetch(`https://api.themoviedb.org/3/movie/${movieId}/credits`,options);
-
-
-if(!movieCastPromise.ok){
-  throw new Error("TMDB fetch error")
-}
-
-   let [movieDetails,movieCast]= await Promise.all([  movieDetailsPromise.json(),  movieCastPromise.json()]);
-
-       let SQLQuery=`insert into movies (
-       mid,
-       title,
-       overview,
-       poster_path,
-       backdrop_path,
-       release_date,
-       original_language,
-       tagline,
-       vote_average,
-       vote_count,
-       runtime
-       ) values(
-        $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11
-       ) returning mid`
-
-   let result= await client.query(SQLQuery,[movieId,
-        movieDetails.title,
-        movieDetails.overview,
-        movieDetails.poster_path,
-        movieDetails.backdrop_path,
-        movieDetails.release_date,
-        movieDetails.original_language,
-        movieDetails.tagline,
-        movieDetails.vote_average.toFixed(1),
-        movieDetails.vote_count,
-        movieDetails.runtime,
-      ])
-
-      console.log(result)
-     
-   }
-
+  //  let movieCastPromise=await fetch(`https://api.themoviedb.org/3/movie/${movieId}/credits`,options);
 
 let shows:string[]=[];
 
@@ -175,6 +84,7 @@ res.status(200).json({
        success:false
     })
   }
+
 
 }
 

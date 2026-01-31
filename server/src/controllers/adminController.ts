@@ -204,12 +204,33 @@ export let getAllBookings:RequestHandler=async(req,res)=>{
 try{
 
   let {rows:total_bookings}=await pool.query(`
-    select u.name,m.title,s.showdatetime, 
+    select b.bid,b.isPaid,st.showid, u.name,m.title,s.showdatetime, 
     array_agg(st.seatid order by st.seatid) as seats,
      count(*)*s.showprice as paid  from movies m join shows s on m.mid=s.mid
      join seatsoccupied st on s.sid=st.showid  join users u on st.uid=u.uid
-    `)
+     join bookings b on b.uid=u.uid
+     where s.tid=$1 group by b.bid,b.isPaid, st.showid,st.uid,u.name,m.title,s.showdatetime,s.showprice
+    `,[req.admin.uid])
   
+
+   total_bookings=total_bookings.map((bookings)=>({
+    _id:bookings.bid,
+    user:{
+      name:bookings.name
+    },
+    show:{
+     _id:bookings.bid,
+     movie:{
+      title:bookings.title,
+     },
+     showDateTime:bookings.showdatetime
+    },
+    amount:bookings.paid,
+    bookedSeats:bookings.seats,
+    isPaid:bookings.isPaid
+
+
+   }))
 
 res.status(200).json({
 success:true,

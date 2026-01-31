@@ -53,7 +53,7 @@ max-md:absolute max-md:top-0 max-md:left-0 z-5  ${open ? "max-md:translate-x-0 w
     <Link  onClick={()=>{scrollTo(0,0); setisOpen(false)}} to={"/movies"}>Movies</Link>
     <Link onClick={()=>{scrollTo(0,0); setisOpen(false)}}  to={"/theaters"}>Theaters</Link>
     <Link  onClick={()=>{scrollTo(0,0); setisOpen(false)}} to={"/"}>Releases</Link>
-    <Link  onClick={()=>{scrollTo(0,0); setisOpen(false)}} to={"/favourites"}>Favourites</Link>
+   {user&& <Link  onClick={()=>{scrollTo(0,0); setisOpen(false)}} to={"/favourites"}>Favourites</Link>}
 </div>
 
 <div className= { `flex gap-8 

@@ -16,7 +16,9 @@ fetchAllMovies(dispatch)
 }
 let fetchAllMovies=async(dispatch:AppDispatch)=>{
 
-let data=await fetch('/api/shows/now-playing');
+let url="/api/movies/all"
+
+let data=await fetch(url);
 
 
 if(!data.ok){
