@@ -3,15 +3,15 @@ import type { MovieType } from "./MovieType"
 export type DashBoardType={
     totalBookings:number,
     totalRevenue:number,
-    totalUser:number,
-    activeShows: ShowType[] 
+    totalUsers:number,
+    activeshows: ShowType[] 
 }
 
  export type ShowType={
-    _id:string,
+    id:string,
     movie:MovieType,
-    showDateTime:string,
-    showPrice:number,
+    showdatetime:string,
+    showprice:number,
     occupiedSeats:{[key:string]:string},
 
 }

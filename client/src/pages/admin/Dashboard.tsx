@@ -1,26 +1,20 @@
 import { BadgeIndianRupee, ChartLineIcon, PlayCircleIcon, StarIcon, UsersIcon } from 'lucide-react';
-import React, { useEffect, useState } from 'react'
-import { dummyDashboardData } from '../../assets/assets';
+import  { useEffect, useState } from 'react'
 import Loading from '../../components/Loading';
 import type { ShowType } from '../../types/DashBoardType';
 import Title from '../../components/admin/Title';
 import BlurCircle from '../../components/BlurCircle';
 import { dateFormat } from '../../dateTimeFormat';
-import { useSelector } from 'react-redux';
-import type { RootState } from '../../../utils/store';
-import { useNavigate } from 'react-router-dom';
+
+import toast from 'react-hot-toast';
 const Dashboard = () => {
 
-let isAdmin=useSelector((store:RootState)=>store.admin.Admin);
-let navigate=useNavigate();
 
-
-
-    let activeShows:ShowType[]=[]
+    let activeshows:ShowType[]=[]
 let [dashBoardData,setDashBoardData]=useState({
     totalBookings:0,
   totalRevenue:0,
-  activeShows,
+  activeshows,
   totalUsers:0
 });
 
@@ -38,7 +32,7 @@ let dashboardCards=[
     icon:BadgeIndianRupee
 },{
     title:"Active Shows",
-    value:dashBoardData.activeShows.length||'0',
+    value:dashBoardData.activeshows?.length||'0',
     icon:PlayCircleIcon
 },{
     title:"Total Users",
@@ -46,8 +40,22 @@ let dashboardCards=[
     icon:UsersIcon
 }
 ]
-let fetchDashBoardData=()=>{
-    setDashBoardData(dummyDashboardData);
+let fetchDashBoardData=async()=>{
+    try{
+
+     let data= await fetch('/api/admin/dashboard');
+    
+     if(!data.ok){
+      return toast.error('Fetching Dash board Data Failed')
+     }
+     let dashboarddata=await data.json();
+console.log(dashboarddata)
+    setDashBoardData(dashboarddata)
+    
+    }
+    catch(err){
+   console.error("The Dash Board error is :" ,err)
+    }
      setLoading(false)
 }
 
@@ -56,7 +64,6 @@ fetchDashBoardData();
 setLoading(false)
     },[])
  
-    console.log(dashBoardData)
 return !loading?<>
     <p className='text-center font-medium text-2xl mb-5 '> Use Quick Show to add Your Theater and Shows </p>
     <Title text1='Admin' text2="Dashboard"/>
@@ -78,25 +85,25 @@ return !loading?<>
             </div>
 
         </div>
-    <p className='mt-10 text-lg font-medium '>Active Shows</p>
+    <p className='mt-10 text-lg font-medium '>Latest Active Shows</p>
 <div className='flex flex-wrap max-w-5xl max-md:justify-center relative gap-6 mt-4 '>
 <BlurCircle left="-10%" top="100px"/>
 {
-    dashBoardData.activeShows.map((show)=>(
-        <div key={show._id} className=' w-55 rounded-lg h-full pb-3 bg-red-700/60 hover:-translate-y-1
+    dashBoardData.activeshows?.map((show)=>(
+        <div key={show.id} className=' w-55 rounded-lg h-full pb-3 bg-red-700/60 hover:-translate-y-1
         transition duration 300 overflow-hidden cursor-pointer
         '>
-<img src={show.movie.poster_path} className=' h-60 w-full rounded-xl object-cover'/>
-<p className='font-medium p-2 truncate'>{show.movie.title}</p>
+<img src={import.meta.env.VITE_TMDB_IMG_URL+show.movie?.poster_path} className=' h-60 w-full rounded-xl object-cover'/>
+<p className='font-medium p-2 truncate'>{show.movie?.title}</p>
 <div className='flex items-center justify-between px-2'>
-<p className='text-lg font-medium flex gap-1 items-center '> <BadgeIndianRupee/> {show.showPrice}</p>
+<p className='text-lg font-medium flex gap-1 items-center '> <BadgeIndianRupee/> {show.showprice}</p>
 <p className='flex items-center gap-1 text-sm text-gray-200 mt-1 pr-1'>
 <StarIcon className='w-4 h-4 fill-green-500 '/>
-{show.movie.vote_average.toFixed(1)}
+{Number(show.movie?.vote_average).toFixed(1)}
 </p>
 </div>
-<p className='px-2 pt-2 text-sm text-gray-300'>{dateFormat(show.showDateTime)}</p>
-        </div>
+{show?.showdatetime&&<p className='px-2 pt-2 text-sm text-gray-300'>{dateFormat(show.showdatetime)}</p>
+       }       </div>
     ))
 }
 </div>

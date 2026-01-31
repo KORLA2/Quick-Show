@@ -15,7 +15,8 @@ let {id}=useParams()
 let navigate=useNavigate();
 let [show,setShow]=useState<ShowState|null>(null);
 let selectedMovie = useSelector((store:RootState)=>store.movie.show)
-
+let shows=useSelector((store:RootState)=>store.movie.nowplaying);
+console.log(selectedMovie)
 async function getShow(){
 
   if (selectedMovie)
@@ -34,7 +35,7 @@ useEffect(()=>{
   return show?
     (<div className='px-6 md:px-16 lg:px-40 md:pt-50 pt:30'>
       <div className='flex flex-col md:flex-row gap-8 mx-auto max-w-6xl'>
-          <img src={show.movie.poster_path} className='rounded-xl 
+          <img src={import.meta.env.VITE_TMDB_IMG_URL+show.movie.poster_path} className='rounded-xl 
           h-104 max-w-70 max-md:mx-auto
           '/>
           <div className='relative  flex flex-col gap-5 '>
@@ -46,7 +47,7 @@ useEffect(()=>{
        </div>
        <p className='mt-2  text-sm max-w-xl leading-tight text-gray-400'>{show.movie.overview}</p>
         <p>
-     {TimeFormat(show.movie.runtime)} - {show.movie.genres.map(genre=>genre.name).join(", ")} - {show.movie.release_date} 
+     {TimeFormat(show.movie.runtime)} - {show.movie.genres?.map(genre=>genre.name).join(", ")} - {show.movie.release_date} 
 
         </p>
         <div className='flex items-center gap-4 flex-wrap mt-4'>
@@ -71,7 +72,7 @@ useEffect(()=>{
 
           <div className='flex items-center gap-4 px-4 cursor-pointer w-max '>
             {
-              show.movie.casts.map((cast,idx)=><div  className="flex flex-col  group items-center text-center" key={idx}>
+              show.movie.casts?.map((cast,idx)=><div  className="flex flex-col  group items-center text-center" key={idx}>
                     <img src={cast.profile_path} className='rounded-full object-cover  group-hover:opacity-70 h-20 w-20'/>
                     <p className='font-medium text-xs mt-3'>{cast.name}</p>
               </div>)
@@ -81,7 +82,7 @@ useEffect(()=>{
   <p className='font-medium text-lg mt-20 mb-8'>You May also Like</p>
 <div className='flex flex-wrap gap-8 max-sm:justify-center '>
   {
-    dummyShowsData.slice(0,4).map(movie=><MovieCards  key={movie._id} movie={movie} />)
+    shows.slice(0,4).map(movie=><MovieCards  key={movie.id} movie={movie} />)
   }
 
 </div>

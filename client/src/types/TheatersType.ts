@@ -1,10 +1,8 @@
-export type TheatersType={
 
-   [key:string]:Theater[]
-}
-type Theater={
-    id:number
-    name:string,
-    Area:string,
+export type Theater={
+    theater_id:string
+    theater_name:string,
+    theater_area:string,
     rating:number
+
 }

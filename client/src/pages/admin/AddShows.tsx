@@ -28,7 +28,7 @@ useEffect(()=>{
   setLoading(false)
 },[])
 
-console.log(selectedMovie)
+console.log(nowPlayingmovies)
 let AddShow= async()=>{
 setLoading(true);
 if(!selectedMovie){
@@ -51,15 +51,25 @@ if(!selectedMovie){
       })
 
     })
-    if(!res.ok)throw new Error('Fetching movies from TMDB failed try again');
-toast("Movie Added to your Theater successfully")
+    if(!res.ok){ 
+      
+      let err=await res.json();
+     
+
+      throw new Error(err.message);
+    }
+toast.success("Show Added to your Theater successfully")
 
   }
   catch(error:any){
 
-    toast(error.message)
+    toast.error(error.message)
   }
-
+setdateTimeSelection({});
+setSelectedMovie(null);
+setdateTimeInput("");
+if(ref.current)
+ref.current.value='';
   setLoading(false)
 }
 
@@ -101,7 +111,7 @@ return rest;
 
 
   return nowPlayingmovies.length>0?<>
-  {loading&&<div className='absolute min-h-screen z-100 top-0 left-0 right-0  backdrop-blur '><Loading/></div>}
+  {loading&&<div className='absolute  min-h-full z-100 top-0 left-0 right-0  backdrop-blur '><Loading/></div>}
 <Title text1="Add" text2="Shows"/>
 <p className='mt-10 font-medium text-xl'>Now Playing Movies</p>
   <div className='pb-4 overflow-x-auto '>
@@ -178,7 +188,7 @@ return rest;
           </div>
           <div className='max-md:flex justify-center'>
 
-<button onClick={AddShow}  className='px-8 py-2 mt-6   bg-red-700 text-gray-200 hover:bg-red-900 hover:text-white transition duration-200 rounded-full cursor-pointer'>Add Show</button>
+<button onClick={AddShow} disabled={loading} className='px-8 py-2 mt-6 disabled:bg-gray-400  bg-red-700 text-gray-200 hover:bg-red-900 hover:text-white transition duration-200 rounded-full cursor-pointer'>Add Show</button>
           </div>
     </div>
   )

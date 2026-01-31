@@ -34,7 +34,7 @@ if(!name||!password||!email){
   }
 let hashPassword=await bcrypt.hash(password,10);
 
-   let uid=await pool.query('insert into users (email,password_hash,name) values($1,$2,$3) returning uid',[email,hashPassword,name])
+   let uid=await pool.query('insert into users (email,password,name) values($1,$2,$3) returning uid,created_at',[email,hashPassword,name])
 console.log(uid);
   let token=generateToken(uid.rows[0].uid);
 res.cookie('token',token,cookieOptions);
@@ -42,7 +42,9 @@ res.cookie('token',token,cookieOptions);
 
  return res.status(201).json({
     uid:uid.rows[0].uid,
-    token
+    name,
+    email,
+    createdAt:uid.rows[0].created_at
 })
 
 } 

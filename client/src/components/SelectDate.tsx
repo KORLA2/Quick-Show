@@ -12,7 +12,14 @@ const SelectDate = ({dateTime,id}:{dateTime:ShowDateTimeType,id:string}) => {
 let [selected,setSelected]=useState<string|null>(null);
 let theaterId=useSelector((store:RootState)=>store.theater.theaterId)
 
-let navigate=useNavigate()
+let navigate=useNavigate();
+
+let handleDate=(date)=>{
+console.log(date)
+
+}
+
+
 let OnBookHanlder=()=>{
 
     if(!selected){
@@ -48,7 +55,7 @@ let OnBookHanlder=()=>{
            <div className='md:flex items-center grid grid-cols-3 max-sm:grid-cols-2  w-max   gap-4'>
             {
                 Object.keys(dateTime).map(date=>(
-                    <button key={date} onClick={()=>setSelected(date)} className={`flex flex-col items-center justify-center 
+                    <button key={date} onClick={()=>{setSelected(date);handleDate(date);} } className={`flex flex-col items-center justify-center 
                     h-14 w-14 rounded-lg cursor-pointer  transition
                     ${selected==date?'bg-green-500 ':'bg-red-700/30'}`}>
                             <span>{new Date(date).getDate()}</span>
@@ -67,7 +74,7 @@ let OnBookHanlder=()=>{
    </div>     
         <button  onClick={OnBookHanlder} className='px-8 py-2 mt-9 bg-red-700 rounded-lg cursor-pointer hover:bg-red-800 transition'>
 
-            Book Now
+           Book Now
         </button>
 
 

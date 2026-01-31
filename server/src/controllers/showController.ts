@@ -21,6 +21,7 @@ try{
   const url = 'https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1';
 
   let playingmoviespromise=await fetch(url,options);
+
   console.log(playingmoviespromise)
 let  now_playing=await playingmoviespromise.json();
 res.status(200).json({
@@ -119,12 +120,9 @@ shows=Object.entries(showsInput).flatMap(show=>
 
 
 console.log(movieId)
- await Promise.all(shows.map(show=> client.query('insert into shows (mid,showdatetime,showprice) values($1,$2,$3)',[movieId,show,showPrice])))
+ await Promise.all(shows.map(show=> client.query('insert into shows (mid,showdatetime,showprice,tid) values($1,$2,$3,$4)',[movieId,show,showPrice,req.admin.uid])))
  
-console.log(req.admin.uid);
 
-let result1= await client.query('insert into theater_movies (tid,mid) values($1,$2)',[req.admin.uid,Number(movieId)])
-console.log(result1)
 
  await client.query('COMMIT')
 
@@ -139,10 +137,16 @@ catch(error:any){
    await client.query('ROLLBACK')
 
   console.log(error)
+if (error.code === '23505') {
+  return res.status(409).json({
+    code: 'SHOW_TIME_CONFLICT',
+    message: 'A show already exists for the selected time slots'
+  });
+}
+
   res.status(400).json({
     success:false,
-    message:error.message,
-    customMessage:error 
+    message:"TMDB fetching movies failed try again"
    })
 }
 

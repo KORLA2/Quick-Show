@@ -9,6 +9,7 @@ const Navbar = () => {
 let [open,setisOpen]=useState(false);
 let [userIconClicked,setUserIconClicked]=useState(false);
 let user=useSelector((store:RootState)=>store.auth.user)
+console.log(user);
 let dispatch=useDispatch();
 let navigate=useNavigate();
 

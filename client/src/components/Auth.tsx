@@ -26,7 +26,7 @@ let handleForm=async(data:AuthForm)=>{
 try{
 
   let url=isSignIn?'/api/user/signIn':'/api/user/signUp';
-  // console.log(url,JSON.stringify(data))
+  console.log(JSON.stringify(data))
   let BACKEND_URL=import.meta.env.VITE_BACKEND_URL
 console.log(BACKEND_URL+url)
   let postData=await fetch(url,{
@@ -48,7 +48,7 @@ dispatch(setSignIn());
 }catch(err:any){
   console.log(err)
   setError("email",{
-    "message":"Some thign Wrong Try Again "
+    "message":err
   })
 }
 

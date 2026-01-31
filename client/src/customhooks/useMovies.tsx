@@ -18,6 +18,7 @@ let fetchAllMovies=async(dispatch:AppDispatch)=>{
 
 let data=await fetch('/api/shows/now-playing');
 
+
 if(!data.ok){
     dispatch(setNowPlayingMovies([])); return;}
 

@@ -93,24 +93,52 @@ export let getDashBoardController:RequestHandler=async (req,res)=>{
 
   try{
 
-    let data= await pool.query('select * from bookings where isPaid=$1',[true]);
-    let total_booked_users=data.rowCount;
+    let data= await pool.query('select * from bookings where isPaid=$1 and tid=$2',[true,req.admin.uid]);
+    let totalUsers=data.rowCount;
     
     let {rows}=data;
-    let total_Revenue=rows.reduce((acc,row)=>acc+row.total_price/100,0);
+    let totalRevenue=rows.reduce((acc,row)=>acc+row.total_price/100,0);
     
-let {rows:activeshows}=await pool.query(`select m.* , s.showdatetime ,s.showprice  from shows s join movies m on s.mid=m.mid 
-where s.showdatetime =( select min(s2.showdatetime) from shows s2 where s2.showdatetime>=now() and s2.mid=s.mid)
+let {rows:activeshows}=await pool.query(`select m.* ,s.sid ,s.showdatetime ,s.showprice  from shows s join movies m on s.mid=m.mid 
+where tid=$1 and s.showdatetime =( select min(s2.showdatetime) from shows s2 where s2.showdatetime>=now() and s2.mid=s.mid) 
 order by m.vote_average desc;
-  `)
+  `,[req.admin.uid])
+activeshows=activeshows.map((show)=>(
 
-    let total_bookings=await pool.query<{count:string}>('select count(*) from seatsoccupied');
+  {
+      id:show.sid,
+      movie:{
+      id: show.mid,
+      title: show.title,
+      overview: show.overview,
+      poster_path: show.poster_path,
+      backdrop_path: show.backdrop_path,
+      // genres: show.genres,
+      // casts: show.casts,
+      release_date: show.release_date,
+      original_language: show.original_language,
+      // tagline: show.tagline,
+      vote_average: show.vote_average,
+      vote_count: show.vote_count,
+      runtime: show.runtime
+      },
+      showdatetime:show.showdatetime,
+      showprice:show.showprice,
+      occupiedSeats:{}  
+  }
+))
+
+
+
+    let {rows:totalBookings}=await pool.query<{count:string}>(`select count(*) from seatsoccupied so join shows s on 
+      so.showid=s.sid where s.tid=$1
+      `,[req.admin.uid]);
     
     res.status(200).json({
       success:true,
-      total_booked_users,
-      total_Revenue,
-      total_bookings,
+      totalUsers,
+      totalRevenue,
+      totalBookings:totalBookings[0].count,
       activeshows
     })
 

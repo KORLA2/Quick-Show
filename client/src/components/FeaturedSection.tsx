@@ -2,10 +2,12 @@ import { ArrowRight } from "lucide-react"
 import BlurCircle from "./BlurCircle"
 import {MovieCards} from "./index.ts"
 import { useNavigate } from "react-router-dom";
-import {dummyShowsData} from "../assets/assets"
+import { useSelector } from "react-redux";
+import type { RootState } from "../../utils/store.ts";
 const FeaturedSection = () => {
 let navigate=useNavigate();
-
+let shows=useSelector((store:RootState)=>store.movie.nowplaying);
+console.log(shows)
   return (
     <div className="px-6 md:px-16 lg:px-24 xl:px-44 overflow-hidden">
 <div className=" relative flex items-center justify-between pt-20 pb-10">
@@ -17,12 +19,15 @@ View All
 </button>
 
 </div>
-<div className="flex flex-wrap gap-8 mt-8 max-sm:justify-center">
 {
-  dummyShowsData.slice(0,4).map(movie=><MovieCards key={movie._id} movie={movie}/>)
+
+shows.length?(<div className="flex flex-wrap gap-8 mt-8 max-sm:justify-center">
+{
+  shows.slice(0,4).map(movie=><MovieCards key={movie.id} movie={movie}/>)
 }
 
-</div>
+</div>):<p className="text-3xl text-center">Fetching Latest Movies from TMDB  Failed</p>
+}
 
 
 <div className="flex justify-center mt-20">
