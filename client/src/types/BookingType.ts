@@ -1,17 +1,13 @@
 import type { MovieType } from "./MovieType"
 
 export type BookingType={
-   _id: string,
-   user: {name:string},
-   show:showType
+   id: string,
+   movie:MovieType,
    amount:number,
-   bookedSeats:string[],
-   isPaid:boolean
-
-}
-type showType={
-    _id:string,
-    movie:MovieType,
-    showDateTime:string,
-  showPrice:number
+   ispaid:boolean,
+   showdatetime:string,
+   booked_date:string,
+   seats:string[]
+   theater_area:string,
+   theater_name:string
 }

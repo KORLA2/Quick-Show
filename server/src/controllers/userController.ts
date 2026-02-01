@@ -112,15 +112,22 @@ return res.status(200).json({
 }
 
 
+
 export let getMyBookings:RequestHandler=async(req,res)=>{
 
 try{
 let {uid}=req.user;
   let {rows:my_bookings}=await pool.query(`select 
   b.booked_date,
-  b.uid,
+  b.bid,
   m.title,
+  m.backdrop_path,
+  m.runtime,
+  b.isPaid,
+  t.theater_name,
+  t.theater_area,
   sh.showdatetime,
+  count(*)*sh.showprice as paid,
   array_agg(s.seatid order by s.seatid) as seats
 from bookings b
 join shows sh 
@@ -129,15 +136,42 @@ join movies m
   on m.mid = sh.mid
 join seatsoccupied s 
   on s.showid = b.showid
-where b.uid = $1
+join theaters t on
+t.theater_id=sh.tid   
+where b.uid=$1
 group by 
   b.booked_date,
-  b.uid,
+  b.bid,
+   t.theater_name,
+  t.theater_area,
   m.title,
+  m.runtime,
+  m.backdrop_path,
+  b.isPaid,
+  sh.showprice,
   sh.showdatetime
 order by 
   sh.showdatetime desc;
 `,[uid]);
+
+
+my_bookings=my_bookings.map((booking)=>(
+{
+  movie:{
+    backdrop_path:booking.backdrop_path,
+    title:booking.title,
+    runtime:booking.runtime
+  },
+  id:booking.bid,
+  showdatetime:booking.showdatetime,
+  booked_date:booking.booked_date,
+  seats:booking.seats,
+  ispaid:booking.ispaid,
+  amount:booking.paid,
+  theater_name:booking.theater_name,
+  theater_area:booking.theater_area
+}
+))
 
 res.status(200).json({
 success:true,
@@ -145,8 +179,9 @@ my_bookings
 });
 }
 catch(error){
+  console.log(error)
 res.status(200).json({
-  success:true,
+  success:false,
   message:error
 })
 }

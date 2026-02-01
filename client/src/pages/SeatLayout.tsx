@@ -78,7 +78,7 @@ return (<button onClick={()=>handleClick(seatId)} className={`h-8 w-8 cursor-poi
  <p className='font-semibold px-6 text-lg '>Available Timings</p>
  <div className='mt-5 space-y-1'>
 {
-  dateTime[date as string].map((time)=>
+  dateTime[date as string]?.map((time)=>
   <div onClick={()=>setSelectedTime(time.time)} className={`flex items-center gap-2 px-6 py-2 rounded-md cursor-pointer transition  duration-150
   ${selectedTime===time.time?'bg-green-500':''}
   `}>
