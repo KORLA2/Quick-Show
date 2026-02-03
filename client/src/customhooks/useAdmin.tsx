@@ -18,7 +18,9 @@ let dispatch=useDispatch();
 
     try{
 
-       let data= await fetch(`/api/admin/auth`);
+       let data= await fetch(`/api/admin/auth`,{
+         credentials: "include",
+       });
 
        if(!data.ok){
         dispatch(setAdmin(false))

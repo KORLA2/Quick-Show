@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import BlurCircle from './BlurCircle'
 import { ChevronLeftIcon, ChevronRight, ChevronRightIcon } from 'lucide-react'
 import type { ShowDateTimeType } from '../types/SHowDateTimeType' 
@@ -7,18 +7,29 @@ import toast from 'react-hot-toast'
 import { useSelector } from 'react-redux'
 import type { RootState } from '../../utils/store'
 
-const SelectDate = ({dateTime,id}:{dateTime:ShowDateTimeType,id:string}) => {
+const SelectDate = ({dateTime,id,setDateTheaters}:{dateTime:ShowDateTimeType,id:string,setDateTheaters:React.Dispatch<React.SetStateAction<string[]>>}) => {
 
 let [selected,setSelected]=useState<string|null>(null);
 let theaterId=useSelector((store:RootState)=>store.theater.theaterId)
-
+let scrollRef=useRef<HTMLDivElement>(null);
 let navigate=useNavigate();
 
-let handleDate=(date)=>{
-console.log(date)
+let handleDate=(date:string)=>{
+
+console.log(Array.from(new Set(dateTime[date].map(date=>date.tid))));
+
+setDateTheaters(Array.from(new Set(dateTime[date].map(date=>date.tid))))
 
 }
 
+let handleScroll=(direction:string)=>{
+ 
+    
+    scrollRef.current?.scrollBy({
+        left: direction === "left" ? -200 : 200,
+      behavior: "smooth",
+    })
+}
 
 let OnBookHanlder=()=>{
 
@@ -31,7 +42,7 @@ let OnBookHanlder=()=>{
         return toast("Please Select Your Favourite Theater")
     }
 
-    navigate(`/movie/${id}/${selected}`)
+    navigate(`/movie/${id}/${selected}/${theaterId}`)
     scrollTo(0,0)
     }
 
@@ -49,8 +60,8 @@ let OnBookHanlder=()=>{
 
 <p className='font-semibold text-lg'>Select Date</p>
         <div className='flex items-center  gap-8 text-sm mt-5'>
-           <ChevronLeftIcon width={30} className='cursor-pointer'/>
-           <div className='overflow-auto no-scrollbar max-w-lg '>
+           <ChevronLeftIcon onClick={()=>handleScroll("left")} width={30} className='cursor-pointer'/>
+           <div ref={scrollRef} className='overflow-auto no-scrollbar max-w-lg '>
 
            <div className='md:flex items-center grid grid-cols-3 max-sm:grid-cols-2  w-max   gap-4'>
             {
@@ -67,7 +78,7 @@ let OnBookHanlder=()=>{
            </div>
            </div>
 
-           <ChevronRightIcon width={30}  className='cursor-pointer'/>
+           <ChevronRightIcon  onClick={()=>handleScroll("right")} width={30}  className='cursor-pointer'/>
         </div>
 
 

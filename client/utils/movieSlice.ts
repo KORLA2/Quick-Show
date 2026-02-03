@@ -7,6 +7,7 @@ type showType={
     favourites:MovieType[]|[]
 }
 
+
 let initialState:showType={
     show:null,
    nowplaying:[],
@@ -19,6 +20,7 @@ initialState,
  reducers:{
   setShow:(state,action)=>{
     state.show=action.payload
+    
   },
   setNowPlayingMovies:(state,action)=>{
   state.nowplaying=action.payload  

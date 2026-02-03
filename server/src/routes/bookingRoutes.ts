@@ -5,4 +5,4 @@ import { Protect } from "../middleware/auth.js";
 export let bookingsRouter=express.Router();
 
 bookingsRouter.post('/create',Protect,createBookingController);
-bookingsRouter.get("/seats/:showId",getOccupiedSeats)
+bookingsRouter.get("/seats/:showId/:theaterID",getOccupiedSeats)

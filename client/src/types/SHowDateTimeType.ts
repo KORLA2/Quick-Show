@@ -4,5 +4,6 @@ export type ShowDateTimeType={
 
 type Time={
     time:string,
-    showId:string
+    showId:string,
+    tid:string
 }

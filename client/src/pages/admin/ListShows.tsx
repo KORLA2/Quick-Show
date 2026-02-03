@@ -15,7 +15,9 @@ const ListShows = () => {
 let getAllShows=async()=>{
 
   try{
-let data= await fetch('/api/admin/allshows')
+let data= await fetch('/api/admin/allshows',{
+  credentials:"include"
+})
 
 let  jsondata= await data.json();
 

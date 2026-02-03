@@ -19,7 +19,9 @@ let fetchFavourites=async(dispatch:AppDispatch)=>{
 
     try{
     console.log('TRIGGERED')
-        let data=await fetch(`/api/user/favourites`);
+        let data=await fetch(`/api/user/favourites`,{
+             credentials: "include",
+        });
 console.log(data)
         let jsondata=await data.json();
 

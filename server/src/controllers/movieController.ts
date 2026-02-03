@@ -8,7 +8,24 @@ try{
 
 let {movieId}=req.params;
 
-let  {rows}=await pool.query('select distinct t.* from theaters t join shows s on t.theater_id=s.tid where mid=$1',[movieId])
+let  {rows}=await pool.query(`
+  select
+  t.theater_id,
+  t.theater_name,
+  t.rating,
+  t.theater_area,
+  min(s.showprice) as min_price
+from theaters t
+join shows s on t.theater_id = s.tid
+where s.mid = $1
+  and s.showdatetime > $2
+group by
+  t.theater_id,
+  t.theater_name,
+  t.theater_area,
+  t.rating
+
+  `,[movieId,new Date()])
 
 console.log(rows)
 res.status(200).json({
@@ -127,6 +144,9 @@ res.status(400).json({
 })
 
 }
+finally{
+  client.release()
+}
 
 }
 
@@ -136,6 +156,7 @@ let client= await pool.connect();
 try{
 
   let {movieID}=req.params;
+client.query('BEGIN');
 
   let {rows:credits}=await client.query<{name:string,profile_path:string}>('select * from moviecast where mid=$1',[movieID])
 
@@ -155,7 +176,6 @@ console.log("FROM DB")
    let casts= await data.json();
 
 
-console.log(Object.keys(casts));
    await Promise.all(casts.cast.map((cast:{name:string,profile_path:string})=> client.query(`insert into moviecast (name,profile_path,mid) values($1,$2,$3)`,[cast.name,cast.profile_path,movieID])));
 
 
@@ -164,7 +184,10 @@ casts=casts.cast.map((cast)=>({
   profile_path:cast.profile_path
 }))
 
+client.query('COMMIT');
+
 console.log("FROM TMDB")
+
 res.status(200).json({
   success:true,
   credits:casts
@@ -172,6 +195,7 @@ res.status(200).json({
 
 }
 catch(error){
+  client.query('ROLLBACK')
   console.log(error)
 res.status(400).json({
   success:false,
@@ -179,6 +203,79 @@ res.status(400).json({
 })
 
 }
+finally{
+  client.release()
+}
 
 }
+
+export let getMovie:RequestHandler=async(req,res)=>{
+
+  let client=await pool.connect();
+  try{
+    
+    console.log("Hello movie Reloading");
+  let {movieID}=req.params
+let {rows:runtime}=await client.query('select runtime from movies where mid=$1',[movieID])
+
+console.log(runtime[0].runtime);
+
+
+if(!runtime[0].runtime){
+
+ let data=await fetch(`https://api.themoviedb.org/3/movie/${movieID}`,options);
+ let jsondata=await data.json();
+console.log(jsondata);
+
+
+
+client.query('BEGIN')
+
+ let {rows:run}=await client.query('update  movies set runtime=$1 where mid=$2 ',[jsondata.runtime,movieID]); 
+ 
+ await Promise.all( jsondata.genres.map((genre:{id:number,name:string})=> client.query(`insert into genres (genre_id,name,mid) values($1,$2,$3) on conflict(genre_id) do nothing`,[genre.id,genre.name,movieID]) ))
+
+ client.query('COMMIT')
+}
+
+
+let {rows:movie}=await client.query(`
+  select
+    m.*,
+    (
+    select array_agg(g.name)
+    from genres g
+    where g.mid = m.mid
+     ) as genres
+    from movies m
+    where m.mid = $1;
+  `,[movieID])
+
+res.status(200).json({
+  success:true,
+  movie:movie[0]
+});
+
+
+}
+catch(error){
+
+  client.query('ROLLBACK');
+
+console.log(error)
+  res.status(400).json({
+  success:false,
+  error:error
+  
+})
+
+} finally{
+
+  client.release()
+}
+
+
+
+}
+
 

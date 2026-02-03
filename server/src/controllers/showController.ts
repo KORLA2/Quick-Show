@@ -58,6 +58,9 @@ if (error.code === '23505') {
     message:"TMDB fetching movies failed try again"
    })
 }
+finally{
+  client.release();
+}
 
 } 
 
@@ -91,22 +94,44 @@ res.status(200).json({
 
 export let getShowController:RequestHandler=async(req,res)=>{
   let {movieID}=req.params;
+  let {theaterID}=req.query
   try{
 
+console.log('Woohoo Hit');
 type ShowType={
   sid:string,
   showdatetime: Date,
   mid:number,
-  showprice:number 
+  showprice:number,
+  tid:string 
 }
 
-    let {rows}= await pool.query<ShowType>('select * from shows where mid=$1 and showdatetime>$2',[movieID,new Date()])
-      
+let sql_query=`
+  select s.*
+  from shows s
+  where s.mid = $1
+  and s.showdatetime > $2
+`;
+let values: any[] = [movieID, new Date()];
+
+if(theaterID){
+
+  sql_query+=' and s.tid=$3'
+   values.push(theaterID);
+}
+
+
+let {rows}= await pool.query(sql_query+' order by s.showdatetime asc',values);
+
+//   let {rows}= await pool.query<ShowType>('select * from shows where mid=$1 and showdatetime>$2 order by showdatetime asc ',[movieID,new Date()])
+ 
 let {rows:movie}=await pool.query('select * from movies where mid=$1',[movieID])
+
 
 let dateTime:{[key:string]:{
   time:Date,
-  showId:string
+  showId:string,
+  tid:string
 }[]}={}
 
 
@@ -117,10 +142,12 @@ let dateTime:{[key:string]:{
     }
     dateTime[date].push({
       time:row.showdatetime,
-      showId:row.sid
+      showId:row.sid,
+      tid:row.tid
     })
 
   })
+  console.log(rows)
 
   res.status(200).json({
     succes:true,
@@ -130,6 +157,8 @@ let dateTime:{[key:string]:{
 
 
   }catch(error){
+
+    console.log(error)
     res.json({
       succes:false,
       error

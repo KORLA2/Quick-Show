@@ -11,6 +11,7 @@ const MovieCards = ({movie}:{movie:MovieType}) => {
 
 let handleMovie=()=>{
 dispatch(setShow(movie))
+
 navigate(`/movie/${movie.id}`)
 scrollTo(0,0)
 

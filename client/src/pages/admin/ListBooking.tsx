@@ -15,7 +15,9 @@ let getBookingsData=async()=>{
 
   try{
 
-    let data=await fetch("/api/admin/allbookings");
+    let data=await fetch("/api/admin/allbookings",{
+      credentials:"include"
+    });
     let jsondata=await data.json();
 console.log(jsondata);
 setBookingData(jsondata.total_bookings)

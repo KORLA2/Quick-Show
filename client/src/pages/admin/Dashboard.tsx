@@ -43,7 +43,9 @@ let dashboardCards=[
 let fetchDashBoardData=async()=>{
     try{
 
-     let data= await fetch('/api/admin/dashboard');
+     let data= await fetch('/api/admin/dashboard',{
+        credentials:"include"
+     });
     
      if(!data.ok){
       return toast.error('Fetching Dash board Data Failed')
@@ -86,7 +88,7 @@ return !loading?<>
 
         </div>
     <p className='mt-10 text-lg font-medium '>Latest Active Shows</p>
-<div className='flex flex-wrap max-w-5xl max-md:justify-center relative gap-6 mt-4 '>
+{ dashBoardData.activeshows?.length?<div className='flex flex-wrap max-w-5xl max-md:justify-center relative gap-6 mt-4 '>
 <BlurCircle left="-10%" top="100px"/>
 {
     dashBoardData.activeshows?.map((show)=>(
@@ -106,7 +108,7 @@ return !loading?<>
        }       </div>
     ))
 }
-</div>
+</div>:<p className='text-2xl text-center mt-4 max-md:text-sm'>Add Trending Movies to your Theater</p> }
     </>:<Loading/>
   
 }

@@ -10,15 +10,17 @@ import Loading from '../components/Loading';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../../utils/store';
 import toast from 'react-hot-toast';
+import type { MovieType } from '../types/MovieType';
 
 const MovieDetails = () => {
 let {id}=useParams()
 let navigate=useNavigate();
 let [cast,setCast]=useState<{name:string,profile_path:string}[]|null>(null);
-let selectedMovie = useSelector((store:RootState)=>store.movie.show)
+// let selectedMovie = useSelector((store:RootState)=>store.movie.show)
+
+let [selectedMovie,setSelectedMovie]=useState<MovieType|null>(null);
 let shows=useSelector((store:RootState)=>store.movie.nowplaying);
-console.log(selectedMovie);
-  let myFavouriteMovies=useSelector((store:RootState)=>store.movie.favourites)
+ let myFavouriteMovies=useSelector((store:RootState)=>store.movie.favourites)
 
 let myFavouriteIds=myFavouriteMovies.map((myfavmov)=>myfavmov.id)
 
@@ -42,9 +44,32 @@ console.log(error)
 
 }
 
-useEffect(()=>{
+let getMovie=async()=>{
 
-getCastData()
+try{
+
+  let data=await fetch(`/api/movie/${id}`)
+  if(!data.ok){
+  let jsondata=await data.json();
+    
+    toast.error('TMDB error refresh again ')
+    throw new Error(jsondata)
+  }
+  let jsondata=await data.json();
+
+  setSelectedMovie(jsondata.movie)
+}
+catch(error){
+  console.log(error)
+  navigate("/movies")
+}
+
+}
+
+useEffect(()=>{
+  scrollTo(0,0)
+getMovie();
+getCastData();
 
 },[id])
 
@@ -82,8 +107,9 @@ console.log(error)
 }
 
 }
+console.log(selectedMovie?.genres);
 
-  return cast? <div className='px-6 md:px-16 lg:px-40 md:pt-50 pt:30'>
+  return selectedMovie? <div className='px-6 md:px-16 lg:px-40 md:pt-50 pt:30'>
       <div className='flex flex-col md:flex-row gap-8 mx-auto max-w-6xl'>
           <img src={import.meta.env.VITE_TMDB_IMG_URL+selectedMovie?.poster_path} className='rounded-xl 
           h-104 max-w-70 max-md:mx-auto
@@ -97,7 +123,7 @@ console.log(error)
        </div>
        <p className='mt-2  text-sm max-w-xl leading-tight text-gray-400'>{selectedMovie?.overview}</p>
        { selectedMovie&&<p>
-    {TimeFormat(selectedMovie?.runtime)} - {selectedMovie?.genres?.map(genre=>genre.name).join(", ")} - {selectedMovie?.release_date} 
+    {TimeFormat(selectedMovie?.runtime)} - {selectedMovie?.genres?.map(genre=>genre).join(", ")} - {selectedMovie?.release_date} 
 
         </p>}
         <div className='flex items-center gap-4 flex-wrap mt-4'>

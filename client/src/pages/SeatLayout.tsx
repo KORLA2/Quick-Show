@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom'
 import type { RootState } from '../../utils/store';
 import type { ShowState } from '../types/ShowState';
+
 import { assets, dummyDateTimeData } from '../assets/assets';
 import Loading from '../components/Loading';
 import { ArrowRightIcon, Clock4Icon } from 'lucide-react';
@@ -16,26 +17,77 @@ const SeatLayout = () => {
   let groupRows=[['A','B'],['C','D'],['E','F'],['G','H'],['I','J'],['K','L']];
 let [selectedSeats,setSelectedSeats]=useState<string[]>([])
 let navigate=useNavigate();
-let {id,date}=useParams();
+let {id,date,theaterID}=useParams();
 let [show,setShow]=useState<ShowState|null>(null)
-let [selectedTime,setSelectedTime]=useState<string|null>(null)
-let selectedMovie=useSelector((store:RootState)=>store.movie.show);
-let dateTime:ShowDateTimeType=useSelector((store:RootState)=>store.show.datetime)
+let [selectedTime,setSelectedTime]=useState(null)
 
-let handleCheckOut=()=>{
+let [dateTime,setDateTime]=useState<ShowDateTimeType>({});
+
+let [occupiedSeats,setOccupiedSeats]=useState([]);
+let user=useSelector((store:RootState)=>store.auth.user);
+let handleCheckOut=async()=>{
+if(!user){
+  return toast("Please Login to Proceed booking")
+}
+
   if(selectedSeats.length==0)
     return toast("Please Select Seats before Payment");
 
-  navigate("/mybookings");scrollTo(0,0)
+  try{
+console.log("Booking Created")
+let data=await fetch('/api/bookings/create',{
+  method:"POST",
+  credentials:"include",
+  headers:{
+  "Content-Type":"application/json",
+  "accept":"application/json",
+  },
+  body:JSON.stringify({
+    selectedSeats,
+    showId:selectedTime?.showId,
+    theaterID,
+  })
+
+});
+
+if(!data.ok)  return toast.error("Some thing went wrong")
+
+let jsondata=await data.json();
+console.log(jsondata);
+navigate("/mybookings");
+
+toast("Pay amount in 5 minutes not to loose your booked seats ")
+}
+catch(error){
+  console.log(error)
 }
 
-let getShow=()=>{
-
 
 
 }
+
+let getShow=async()=>{
+
+try{
+ let data=await fetch(`/api/shows/${id}/?theaterID=${theaterID}`)
+
+let jsondata= await data.json();
+
+console.log(jsondata.dateTime);
+setDateTime(jsondata.dateTime);
+
+}
+catch(error){
+console.log(error)
+}
+
+}
+
+
+
 
 let handleClick=(seatId:string)=>{
+
 if(!selectedTime){
  return  toast("Please Select your time")
 }
@@ -44,23 +96,57 @@ if(!selectedSeats.includes(seatId)&&selectedSeats.length>=5){
   return toast("You cannot Book more than 5 seats")
 }
 
+if(occupiedSeats.includes(seatId)){
+  return toast("Seat already booked")
+}
+
 setSelectedSeats(prev=>prev.includes(seatId)?prev.filter(seat=>seat!=seatId):[...prev,seatId])
 
 }
-console.log(selectedSeats)
+console.log(selectedSeats);
+
+let getOccupiedSeats=async()=>{
+
+  try{
+
+    let data=await fetch(`/api/bookings/seats/${selectedTime?.showId}/${theaterID}`);
+    let jsondata=await data.json();
+
+setOccupiedSeats(jsondata.message);
+  }
+catch(error){
+console.log(error)
+}
+
+}
+
 useEffect(()=>{
+  
   getShow()
 },[id])
 
+useEffect(()=>{
+
+  if(selectedTime){
+
+    getOccupiedSeats();
+  }
+
+},[selectedTime])
+
 
 let renderSeats=(row:string,count=9)=>{
+
 return (
   <div key={row} className='flex gap-2 '>
      <div className='flex items-center justify-center gap-2'>
 {Array.from({length:count},(_,i)=>{
   let seatId=row+(i+1);
-return (<button onClick={()=>handleClick(seatId)} className={`h-8 w-8 cursor-pointer rounded text-white   transition
- ${selectedSeats.includes(seatId)?'bg-red-700':'bg-green-500'}`}>
+return (<button onClick={()=>handleClick(seatId)} className={`h-8 w-8  rounded text-white transition
+ ${occupiedSeats.includes(seatId)?'bg-gray-500':selectedSeats.includes(seatId)?'bg-red-700 cursor-pointer':' cursor-pointer bg-green-500'}
+  
+ 
+ `}>
 
 {seatId}
 </button>)
@@ -79,8 +165,9 @@ return (<button onClick={()=>handleClick(seatId)} className={`h-8 w-8 cursor-poi
  <div className='mt-5 space-y-1'>
 {
   dateTime[date as string]?.map((time)=>
-  <div onClick={()=>setSelectedTime(time.time)} className={`flex items-center gap-2 px-6 py-2 rounded-md cursor-pointer transition  duration-150
-  ${selectedTime===time.time?'bg-green-500':''}
+  (
+  time.tid==theaterID&&<div onClick={()=>setSelectedTime(time)} className={`flex items-center gap-2 px-6 py-2 rounded-md cursor-pointer transition  duration-150
+  ${selectedTime?.time===time.time?'bg-green-500':''}
   `}>
     <Clock4Icon className='w-4 h-4'/>
     <p className='text-sm'>{new Date(time.time).toLocaleTimeString("en-us",{
@@ -89,6 +176,7 @@ return (<button onClick={()=>handleClick(seatId)} className={`h-8 w-8 cursor-poi
       hour12:true
     })}</p>
   </div>
+  )
   )
 }
  </div>

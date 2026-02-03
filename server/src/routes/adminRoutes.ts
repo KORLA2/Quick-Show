@@ -11,7 +11,6 @@ adminRouter.get("/dashboard",protectAdmin,getDashBoardController)
 adminRouter.get("/allshows",protectAdmin,getAllShows);
 adminRouter.get('/allbookings',protectAdmin,getAllBookings)
 adminRouter.use("/auth",protectAdmin,(req,res)=>{
-
     res.json(req.admin)
 })
 

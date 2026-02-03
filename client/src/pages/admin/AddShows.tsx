@@ -39,6 +39,7 @@ if(!selectedMovie){
 
    let res=await  fetch("/api/shows/addshow",{
       method:"POST",
+      credentials: "include",
       headers:{
         "Content-Type":"application/json",
         "accept":"application/json"

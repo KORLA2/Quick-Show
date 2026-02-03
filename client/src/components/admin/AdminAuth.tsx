@@ -27,6 +27,7 @@ try{
 let url=isSignUp?'/api/admin/signUp':'/api/admin/signIn';
   let resp=await fetch(url,{
     method:"POST",
+    credentials: "include",
     headers:{
       'Content-Type':'application/json'
     },

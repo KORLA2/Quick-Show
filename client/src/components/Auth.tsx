@@ -96,13 +96,13 @@ dispatch(setSignIn());
 
   <input type={show?'text':'password'} {...register('password')} className='w-full p-1 mt-2 outline-none border-b-2 focus:border-b-red-600 ' placeholder='Password' required name='password'/>
   
-  {
-    errors.password && <p className='text-red-600 bg-red-100'>{errors.password.message}</p>
-  }
+ 
   
   <div onClick={()=>setShow(!show)} className='absolute right-4  top-1/2 -translate-y-1/2 cursor-pointer select-none'>{!show ? <EyeClosed/> : <Eye/>}</div>
   </div>
-
+ {
+    errors.password && <p className='text-red-600  bg-red-100'>{errors.password.message}</p>
+  }
 
 {!isSignIn&&(
   <div className='relative'>

@@ -8,3 +8,5 @@ create table if not exists bookings(
     booked_date timetamp default now()
 );
 
+
+alter table bookings add column expires_at timestamp not null;

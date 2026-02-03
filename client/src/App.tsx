@@ -13,6 +13,7 @@ import { AdminOnly} from './pages/admin/AdminOnly'
 import {GuestOnly } from './pages/admin/GuestOnly'
 import { useMovies } from './customhooks/useMovies'
 import useFavourites from './customhooks/useFavourites'
+import Loading from './components/Loading'
 const App = () => {
   let signIn=useSelector((store:RootState)=>store.auth.signIn);
 useUser();
@@ -29,7 +30,7 @@ let isAdminRoute=pathname.includes("/admin")
 <div>
 
 {
-signIn &&<div className='backdrop-blur  bg-black/10 z-11 top-0 left-0 right-0 bottom-0 absolute '>
+signIn &&<div className='backdrop-blur  bg-black/10 z-11 top-0 left-0 right-0 bottom-0 fixed '>
 
 <Auth/>
 </div>
@@ -40,9 +41,10 @@ signIn &&<div className='backdrop-blur  bg-black/10 z-11 top-0 left-0 right-0 bo
 <Route path='/' element={<Home/>}/>
 <Route path="/user/*" element={<Home/>}/>
 <Route path='/movies' element={<Movies/>}/>
-<Route path='/movie/:id' element={<MovieDetails/>}/>        
+<Route path='/movie/:id' element={<MovieDetails/>}/>
 <Route path='/mybookings' element={<MyBookings/>}/>
-<Route path='/movie/:id/:date' element={<SeatLayout/>}/>
+
+<Route path='/movie/:id/:date/:theaterID' element={<SeatLayout/>}/>
 <Route path='/movie/:id/theaters' element={<Theaters/>}/>
 <Route path='/favourites' element={<Favourites/>} />
 

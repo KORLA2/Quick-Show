@@ -2,7 +2,7 @@ import {createSlice} from '@reduxjs/toolkit'
 import type { User } from '../src/types/UserType';
 export type AuthState={
       signIn:boolean,
-      user:User|null
+      user:User|null,
 }
 const initialState:AuthState={
     user:null,
@@ -21,6 +21,7 @@ let authSlice=createSlice({
         },
         LogOutUser:(state)=>{
                state.user=null; 
+               
         }
 
     }
