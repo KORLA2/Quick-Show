@@ -20,3 +20,12 @@ input::-webkit-inner-spin-button,::-webkit-outer-spin-button{
     filter:invert(1);
     font-size: larger;
 }
+
+.kgf-font {
+  font-family: 'Cinzel', serif;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #a98200;
+  text-shadow:
+    2px 2px 8px rgba(0,0,0,0.8);
+}

@@ -9,6 +9,7 @@ import { ReceiptIndianRupee } from 'lucide-react';
 import { useSelector } from 'react-redux'
 import type { RootState } from '../../utils/store'
 import { useNavigate } from 'react-router-dom'
+import toast from 'react-hot-toast'
 const MyBookings = () => {
 let [isLoading,setisLoading]=useState(true)
 let [bookings,setBookings]=useState<BookingType[]>([]);
@@ -44,6 +45,28 @@ console.log(error)
 setisLoading(false)
 }
 
+let handlePay= async(bookingid:string)=>{
+
+try{
+
+  await fetch(`/api/user/booking/pay`,{
+    method:"POST",
+    headers:{
+      "Content-Type":"application/json",
+      "accept":"application/json"
+    },
+    body:JSON.stringify(bookingid),
+    credentials:"include"
+  })
+  toast('Payment Succesful')
+setNow(Date.now())
+}
+catch(error){
+  console.log(error)
+}
+
+}
+ 
 let deleteBookings=async()=>{
 
 try{
@@ -76,12 +99,14 @@ deleteBookings();
 {
   bookings.map((booking,idx)=>{
 
-const remainingSeconds = Math.max(
+
+const remainingSeconds  = Math.max(
   Math.floor(
     (new Date(booking.expires_at).getTime() - now) / 1000
   ),
   0
 );
+
 
     return <div key={booking.id}  className='flex flex-col md:flex-row justify-between bg-red-500/30 rounded-lg mt-4 p-2 max-w-3xl 
     '>
@@ -102,7 +127,7 @@ const remainingSeconds = Math.max(
 <div className=' flex flex-col max-sm:items-end'>
 <div className='flex items-center gap-4'>
 <p className='flex items-center text-2xl font-semibold mb-3'>{booking.amount} <ReceiptIndianRupee/></p>
-{!booking.ispaid&&<button className={`px-4 py-1.5 mb-3 font-medium text-sm cursor-pointer transition bg-red-700 hover:bg-red-800 rounded-full disabled:${remainingSeconds<=0} disabled:bg-gray-400 disabled:cursor-not-allowed `}>Pay Now</button>}
+{!booking.ispaid&&<button onClick={()=>handlePay(booking.id)} className={`px-4 py-1.5 mb-3 font-medium text-sm cursor-pointer transition bg-red-700 hover:bg-red-800 rounded-full disabled:${remainingSeconds<=0} disabled:bg-gray-400 disabled:cursor-not-allowed `}>Pay Now</button>}
 </div>
 <div className='text-sm'>
 <p className='my-3 max-md:text-sm'>Time Remaining : {TimeFormatSec(remainingSeconds)}</p>

@@ -300,4 +300,24 @@ id:movie.mid
 
 }
 
+export let MakePayment:RequestHandler=async(req,res)=>{
 
+  try{
+let {bid}=req.body;
+     
+    await pool.query(`insert into bookings set ispaid=$1 where bid=$2`,[true,bid]);
+
+    res.status(200).json({
+      success:true,
+      message:"Successful"
+    })
+  }
+  catch(err){
+    console.log(err)
+    res.status(400).json({
+      success:false,
+      err
+    })
+
+  }
+}
