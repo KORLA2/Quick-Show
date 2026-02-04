@@ -3,6 +3,10 @@
     {
       "source": "/api/(.*)",
       "destination": "https://quick-show-u9uu.onrender.com/api/$1"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }
