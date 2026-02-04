@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "https://quick-show-u9uu.onrender.com/api/$1"
+    }
+  ]
+}
