@@ -305,7 +305,7 @@ export let MakePayment:RequestHandler=async(req,res)=>{
   try{
 let {bid}=req.body;
      
-    await pool.query(`insert into bookings set ispaid=$1 where bid=$2`,[true,bid]);
+    await pool.query(`update bookings set ispaid=$1 where bid=$2`,[true,bid]);
 
     res.status(200).json({
       success:true,

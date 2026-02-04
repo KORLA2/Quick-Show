@@ -18,7 +18,7 @@ const SeatLayout = () => {
 let [selectedSeats,setSelectedSeats]=useState<string[]>([])
 let navigate=useNavigate();
 let {id,date,theaterID}=useParams();
-let [show,setShow]=useState<ShowState|null>(null)
+let [loading,setLoading]=useState<boolean>(true)
 let [selectedTime,setSelectedTime]=useState(null)
 
 let [dateTime,setDateTime]=useState<ShowDateTimeType>({});
@@ -34,6 +34,8 @@ if(!user){
     return toast("Please Select Seats before Payment");
 
   try{
+    setLoading(true);
+    scrollTo(0,0)
 console.log("Booking Created")
 let data=await fetch('/api/bookings/create',{
   method:"POST",
@@ -54,6 +56,7 @@ if(!data.ok)  return toast.error("Some thing went wrong")
 
 let jsondata=await data.json();
 console.log(jsondata);
+setLoading(false);
 navigate("/mybookings");
 
 toast("Pay amount in 5 minutes not to loose your booked seats ")
@@ -75,12 +78,12 @@ let jsondata= await data.json();
 
 console.log(jsondata.dateTime);
 setDateTime(jsondata.dateTime);
-
 }
 catch(error){
-console.log(error)
+  console.log(error)
 }
 
+setLoading(false)
 }
 
 
@@ -113,11 +116,12 @@ let getOccupiedSeats=async()=>{
     let jsondata=await data.json();
 
 setOccupiedSeats(jsondata.message);
-  }
+}
 catch(error){
-console.log(error)
+  console.log(error)
 }
 
+setLoading(false)
 }
 
 useEffect(()=>{
@@ -128,7 +132,7 @@ useEffect(()=>{
 useEffect(()=>{
 
   if(selectedTime){
-
+setLoading(true)
     getOccupiedSeats();
   }
 
@@ -157,7 +161,7 @@ return (<button onClick={()=>handleClick(seatId)} className={`h-8 w-8  rounded t
 
 }
 
-  return <div className='flex flex-col md:flex-row   px-2 md:px-16 lg:px-30 py-30 md:pt-50'>
+  return !loading?<div className='flex flex-col md:flex-row   px-2 md:px-16 lg:px-30 py-30 md:pt-50'>
 
  <div className='bg-red-700/70 w-60 h-max py-10 rounded-lg border border-red-400/70 md:sticky md:top-30'>
  
@@ -224,7 +228,7 @@ return (<button onClick={()=>handleClick(seatId)} className={`h-8 w-8  rounded t
   <ArrowRightIcon className='group-hover:translate-x-0.5' />
 </button>
 </div>
-  </div>
+  </div>:<Loading/>
 }
 
 export default SeatLayout

@@ -11,6 +11,7 @@ import type { Theater } from '../types/TheatersType';
 import { setdatetime } from '../../utils/showSlice';
 import toast from 'react-hot-toast';
 import { IndianRupee } from 'lucide-react';
+import Loading from '../components/Loading';
 
 const Theaters = () => {
     let {id}=useParams();
@@ -19,6 +20,7 @@ let [theaters,setTheaters]=useState<Theater[]>([])
 let theaterId=useSelector((store:RootState)=>store.theater.theaterId)
 let dateTime=useSelector((store:RootState)=>store.show.datetime);
 let [dateTheaters,setDateTheaters]=useState<string[]>([])
+let [loading,setLoading]=useState<boolean>(true);
 console.log(dateTheaters)
 async function fetchMovieTheaters(id:string){
 
@@ -36,7 +38,7 @@ setTheaters(data.rows)
 catch(err){
 console.log(err)
 }
-
+setLoading(false);
 } 
 
 async function fetchShows(){
@@ -64,7 +66,6 @@ console.log(theaters)
 fetchShows();
   fetchMovieTheaters(id as string)
 
-
   },[])
 
 let handleTheater=(theaterId:string)=>{
@@ -77,7 +78,7 @@ let handleTheater=(theaterId:string)=>{
 
   return (
     <div className=' px-10 md:px-16 relative lg:px-36 flex flex-col items-center rounded-lg '>
-      { theaters.length?(<> <p className='mt-20 text-xl font-semibold text-gray-300'> Please Select Date and  Your  Favourite Theater</p>
+      { loading?<Loading/>: theaters.length?(<> <p className='mt-20 text-xl font-semibold text-gray-300'> Please Select Date and  Your  Favourite Theater</p>
         <SelectDate setDateTheaters={setDateTheaters}  dateTime={dateTime}  id={id as string}/>
       
       <div className='bg-red-300/20 rounded-xl  py-5 md:px-20 md:py-10  mt-10 '>

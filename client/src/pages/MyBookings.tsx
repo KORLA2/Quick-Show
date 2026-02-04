@@ -49,15 +49,17 @@ let handlePay= async(bookingid:string)=>{
 
 try{
 
-  await fetch(`/api/user/booking/pay`,{
+  let data=await fetch(`/api/user/bookings/pay`,{
     method:"POST",
     headers:{
       "Content-Type":"application/json",
       "accept":"application/json"
     },
-    body:JSON.stringify(bookingid),
+    body:JSON.stringify({bid:bookingid}),
     credentials:"include"
-  })
+  });
+let jsondata=await data.json();
+console.log(jsondata)
   toast('Payment Succesful')
 setNow(Date.now())
 }
@@ -130,7 +132,7 @@ const remainingSeconds  = Math.max(
 {!booking.ispaid&&<button onClick={()=>handlePay(booking.id)} className={`px-4 py-1.5 mb-3 font-medium text-sm cursor-pointer transition bg-red-700 hover:bg-red-800 rounded-full disabled:${remainingSeconds<=0} disabled:bg-gray-400 disabled:cursor-not-allowed `}>Pay Now</button>}
 </div>
 <div className='text-sm'>
-<p className='my-3 max-md:text-sm'>Time Remaining : {TimeFormatSec(remainingSeconds)}</p>
+{ !booking.ispaid&&<p className='my-3 max-md:text-sm'>Time Remaining : {TimeFormatSec(remainingSeconds)}</p>}
 <p><span className='text-gray-400'>Total Tickets : </span>{booking.seats.length}</p>
 <p><span className='text-gray-400'>Booked Seats : </span>{booking.seats.join(" , ")}</p>
 <p><span className='text-gray-400'>Booked Date : </span>{dateFormat(booking.booked_date)}</p>
