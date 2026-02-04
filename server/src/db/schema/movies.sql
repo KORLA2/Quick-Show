@@ -16,6 +16,8 @@ create table if not exists movies(
 create table if not exists  genres (
     genre_id bigserial primary key,
     name text not null,
+    mid int not null references movies(mid),
+
 )
 
 create table if not exists movie_genre(

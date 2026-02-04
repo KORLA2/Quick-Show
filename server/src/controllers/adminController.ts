@@ -26,7 +26,7 @@ console.log(tid)
  let hashedPass=await bcrypt.hash(password,10)
 
 
-let {rows:admin}= await pool.query(`insert into users (email,password,theater_id,name,isAdmin,uid) values($1,$2,$3,$4,$5,$6) 
+let {rows:admin}= await pool.query(`insert into users (email,password,theater_id,name,isadmin,uid) values($1,$2,$3,$4,$5,$6) 
   returning uid,created_at`,[email,hashedPass,tid,name,true,tid]);
 
 let token=generateToken(admin[0].uid);
@@ -46,7 +46,7 @@ res.status(200).json({
 catch(error){
 
   await pool.query('ROLLBACK');
-
+console.log(error)
 res.status(400).json({
   succes:false,
   message:error
@@ -59,7 +59,7 @@ res.status(400).json({
 export let adminSignInController:RequestHandler= async(req,res)=>{
 
     let {email,password}=req.body;
-  let result=await pool.query('select * from users where email=$1 and isAdmin=$2',[email,true])
+  let result=await pool.query('select * from users where email=$1 and isadmin=$2',[email,true])
   if(result.rowCount==0){
     res.status(400).json({
       message:"Email Or  Password is Incorrect"

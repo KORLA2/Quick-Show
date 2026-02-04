@@ -3,10 +3,9 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 export let pool=new Pool({
- connectionString:process.env.LOCAL_CONNECTION_STRING
+ connectionString:process.env.PROD_CONNECTION_STRING
+ 
 });
-
-
 
 
  export async function ConnectDB(){

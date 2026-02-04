@@ -9,6 +9,7 @@
     "strict": true,
     "declaration": true,
     "sourceMap": true,
+    "noImplicitAny": false,
     "skipLibCheck": true
   },
   "include": ["src"]

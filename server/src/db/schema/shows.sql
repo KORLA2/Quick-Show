@@ -1,6 +1,6 @@
 create table shows if not exists(
     sid uuid primary key default uuid_generate_v4(),
-    mid uuid  not null references movies(mid),
+    mid int  not null references movies(mid),
     showPrice Numeric(5,2) not null,
     showDateTime timetamp not null
 );
@@ -8,8 +8,9 @@ create table shows if not exists(
 create table if not exists seatsOccupied(
 showId uuid not null references shows(sid),
 seatId text not null,
-uid uuid not null references users(uid)
-primary key(showId, seatId,uid)
+uid uuid not null references users(uid),
+bid uuid not null references bookings(bid),
+primary key(showId, seatId)
 
 );
 
