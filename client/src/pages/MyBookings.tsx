@@ -61,7 +61,13 @@ try{
 let jsondata=await data.json();
 console.log(jsondata)
   toast('Payment Succesful')
-setNow(Date.now())
+ setBookings(prev=>(
+  prev.map((paid)=>{
+  
+  if(paid.id==bookingid)return {...paid,ispaid:true};
+  return paid;
+})
+ ))
 }
 catch(error){
   console.log(error)
