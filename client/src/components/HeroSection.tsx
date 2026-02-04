@@ -2,7 +2,7 @@ import React from 'react'
 import { assets } from '../assets/assets'
 import { ArrowRight, Calendar,  Clock4Icon } from 'lucide-react'
 import { useNavigate } from 'react-router-dom';
-import bgvideo from "../../public/backgroundVideo.mp4"
+import bgvideo from "/backgroundVideo.mp4";
 import ReactPlayer from 'react-player'
 
 const HeroSection = () => {
