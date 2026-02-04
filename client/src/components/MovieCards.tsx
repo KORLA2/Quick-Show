@@ -17,9 +17,7 @@ scrollTo(0,0)
 
 }
   return (
-
-   
-    <div onClick={handleMovie} className='flex flex-col justify-between p-3 bg-gray-800 rounded-2xl hover:-translate-y-1 
+  <div onClick={handleMovie} className='flex flex-col justify-between p-3 bg-gray-800 rounded-2xl hover:-translate-y-1 
     transition duration-300 w-66 cursor-pointer
     '>
 <img  src={import.meta.env.VITE_TMDB_IMG_URL+movie.backdrop_path} 
@@ -49,9 +47,9 @@ dispatch(setShow(movie))
     </p>
 </div>
 </div>
-
-
   )
+
+  
 }
 
 export default MovieCards

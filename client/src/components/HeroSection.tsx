@@ -23,7 +23,7 @@ let navigate=useNavigate();
     <div className= 'h-screen px-6 md:px-16 lg:px-36 flex flex-col items-start gap-4 justify-center '>
 
 <img src={assets.marvelLogo} className='h-11 w-auto mt-20'/>
-<p className='text-5xl kgf-font md:text-[70px] font-semibold max-w-110 md:leading-18'>
+<p className='text-5xl  md:text-[70px] font-semibold max-w-110 md:leading-18'>
     K.G.F  <br/> CHAPTER 2
 </p>
 

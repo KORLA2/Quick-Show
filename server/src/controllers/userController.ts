@@ -9,8 +9,8 @@ import bcrypt from "bcryptjs"
 export let cookieOptions={
 
   httpOnly: true,
-  sameSite: "lax", // or "none" for cross-site
-  secure: false,  // true ONLY in HTTPS
+  sameSite: "none", // or "none" for cross-site
+  secure: true,  // true ONLY in HTTPS
 } as const
 
 
