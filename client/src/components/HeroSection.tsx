@@ -16,7 +16,7 @@ let navigate=useNavigate();
   playsInline
   className="absolute top-0 left-0 w-full h-screen  object-cover max-sm:object-fit -z-10"
  >
-<source src="/backgroundVideo.mp4" type="video/mp4" />
+<source src="/assets/backgroundVideo.mp4" type="video/mp4" />
  </video>
     <div className= 'h-screen px-6 md:px-16 lg:px-36 flex flex-col items-start gap-4 justify-center '>
 
