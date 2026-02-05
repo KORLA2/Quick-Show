@@ -17,7 +17,7 @@ let {id}=useParams()
 let navigate=useNavigate();
 let [cast,setCast]=useState<{name:string,profile_path:string}[]|null>(null);
 // let selectedMovie = useSelector((store:RootState)=>store.movie.show)
-
+let [loading,setLoading]=useState(true)
 let [selectedMovie,setSelectedMovie]=useState<MovieType|null>(null);
 let shows=useSelector((store:RootState)=>store.movie.nowplaying);
  let myFavouriteMovies=useSelector((store:RootState)=>store.movie.favourites)
@@ -26,7 +26,7 @@ let myFavouriteIds=myFavouriteMovies.map((myfavmov)=>myfavmov.id)
 
 
 let getCastData=async()=>{
-  
+  setLoading(true)
 try{
   let data=await fetch(`/api/movie/${id}/credits`)
 
@@ -41,11 +41,11 @@ catch(error){
 console.log(error)
 
 }
-
+setLoading(false)
 }
 
 let getMovie=async()=>{
-
+  setLoading(true)
 try{
 
   let data=await fetch(`/api/movie/${id}`)
@@ -64,10 +64,11 @@ catch(error){
   navigate("/movies")
 }
 
+setLoading(false)
 }
 
 useEffect(()=>{
-  scrollTo(0,0)
+  scrollTo(0,0);
 getMovie();
 getCastData();
 
@@ -109,7 +110,7 @@ console.log(error)
 }
 console.log(selectedMovie?.genres);
 
-  return selectedMovie? <div className='px-6 md:px-16 lg:px-40 md:pt-50 pt:30'>
+  return !loading? <div className='px-6 md:px-16 lg:px-40 md:pt-50 pt:30'>
       <div className='flex flex-col md:flex-row gap-8 mx-auto max-w-6xl'>
           <img src={import.meta.env.VITE_TMDB_IMG_URL+selectedMovie?.poster_path} className='rounded-xl 
           h-104 max-w-70 max-md:mx-auto
