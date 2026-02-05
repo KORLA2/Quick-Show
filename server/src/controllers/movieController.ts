@@ -231,7 +231,7 @@ console.log(jsondata);
 
 client.query('BEGIN')
 
- let {rows:run}=await client.query('update  movies set runtime=$1 where mid=$2 ',[jsondata.runtime,movieID]); 
+ let {rows:run}=await client.query('update movies set runtime=$1 where mid=$2 ',[jsondata.runtime,movieID]); 
  
  await Promise.all( jsondata.genres.map((genre:{id:number,name:string})=> client.query(`insert into genres (genre_id,name,mid) values($1,$2,$3) on conflict(genre_id) do nothing`,[genre.id,genre.name,movieID]) ))
 

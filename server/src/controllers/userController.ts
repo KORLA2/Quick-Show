@@ -158,7 +158,7 @@ order by
 
 
 `,[uid]);
-
+console.log(my_bookings);
 
 my_bookings=my_bookings.map((booking)=>(
 {
@@ -178,7 +178,7 @@ my_bookings=my_bookings.map((booking)=>(
   expires_at:booking.expires_at
 }
 ))
-
+console.log(my_bookings)
 res.status(200).json({
 success:true,
 my_bookings
