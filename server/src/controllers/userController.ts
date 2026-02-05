@@ -140,7 +140,7 @@ join seatsoccupied s
   on s.bid = b.bid   
 join theaters t 
   on t.theater_id = sh.tid
-where b.uid = $1 and b.expires_at>$2
+where b.uid = $1 
 group by 
   b.booked_date,
   b.bid,
@@ -157,7 +157,7 @@ order by
   b.booked_date desc;
 
 
-`,[uid,new Date()]);
+`,[uid]);
 
 
 my_bookings=my_bookings.map((booking)=>(

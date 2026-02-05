@@ -11,7 +11,7 @@ const Dashboard = () => {
 
 
     let activeshows:ShowType[]=[]
-let [dashBoardData,setDashBoardData]=useState({
+    let [dashBoardData,setDashBoardData]=useState({
     totalBookings:0,
   totalRevenue:0,
   activeshows,
@@ -62,8 +62,9 @@ console.log(dashboarddata)
 }
 
     useEffect(()=>{
+        setLoading(true);
 fetchDashBoardData();
-setLoading(false)
+
     },[])
  
 return !loading?<>
