@@ -62,7 +62,7 @@ try{
 
   let {rows:lastcached}=await pool.query('select synced from lastcached');
 
-    if( lastcached.length && Date.now() - new Date(lastcached[0].synced).getTime() <= 24 * 60 * 60 * 1000){
+    if( lastcached.length && Date.now() - new Date(lastcached[0].synced).getTime() <= 20*24 * 60 * 60 * 1000){
 console.log("FROM DB")
 
         let {rows:movies}=await pool.query(`select * from movies`);
