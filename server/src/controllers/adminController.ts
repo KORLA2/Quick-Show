@@ -97,7 +97,7 @@ export let getDashBoardController:RequestHandler=async (req,res)=>{
     let totalUsers=data.rowCount;
     
     let {rows}=data;
-    let totalRevenue=rows.reduce((acc,row)=>acc+row.total_price/100,0);
+    let totalRevenue=rows.reduce((acc,row)=>acc+row.total_price,0);
     
 let {rows:activeshows}=await pool.query(`select m.* ,s.sid ,s.showdatetime ,s.showprice  from shows s join movies m on s.mid=m.mid 
 where tid=$1 and s.showdatetime =( select min(s2.showdatetime) from shows s2 where s2.showdatetime>=now() and s2.mid=s.mid and s2.tid=s.tid) 
