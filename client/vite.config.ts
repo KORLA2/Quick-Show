@@ -20,7 +20,5 @@ import {analyzer} from "vite-bundle-analyzer"
         },
       },
     },
-    build:{
-      ssr:true
-    }
+   
   })
