@@ -44,7 +44,7 @@ await Promise.all(
     client.query(
       `insert into seatsoccupied (bid, showid, seatid,uid)
        values ($1, $2, $3,$4)`,
-      [bid[0].bid, showId, seat,user.uid]
+      [bid[0].bid, showId, seat,user?.uid]
     )
   )
 );
