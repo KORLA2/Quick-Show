@@ -9,18 +9,22 @@ const useFavourites = () => {
     let dispatch=useDispatch();
 
   useEffect(()=>{
-      if(user)
-      fetchFavourites(dispatch);
-},[])  
+    if(!user) return;
+    const controller=new AbortController();
+      
+      fetchFavourites(dispatch,controller);
+    return ()=>controller.abort();
+    },[user])  
   
 }
 
-let fetchFavourites=async(dispatch:AppDispatch)=>{
+let fetchFavourites=async(dispatch:AppDispatch,controller:AbortController)=>{
 
     try{
     console.log('TRIGGERED')
         let data=await fetch(`/api/user/favourites`,{
              credentials: "include",
+             signal:controller.signal
         });
 console.log(data)
         let jsondata=await data.json();

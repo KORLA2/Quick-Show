@@ -34,6 +34,7 @@ setLoading(false);
 }
 
 useEffect(()=>{
+  
  getAllShows()
 
 },[])

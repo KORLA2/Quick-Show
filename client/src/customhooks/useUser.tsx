@@ -5,18 +5,21 @@ import type {AppDispatch}  from "../../utils/store";
 
 export function useUser(){
 let dispatch=useDispatch();
+    let controller=new AbortController();
 
   useEffect(()=>{
-fetchUserInfo(dispatch)
-    
+  fetchUserInfo(dispatch,controller)
+  return ()=> controller.abort();
+
 },[])
 
 }
 
-let fetchUserInfo=async(dispatch:AppDispatch)=>{
+let fetchUserInfo=async(dispatch:AppDispatch,controller:AbortController)=>{
   let BACKEND_URL=import.meta.env.BACKEND_URL
     let user=await fetch("/api/user/auth/me",{
-      credentials:"include"
+      credentials:"include",
+      signal:controller.signal
     });
     if(!user.ok) return;
 

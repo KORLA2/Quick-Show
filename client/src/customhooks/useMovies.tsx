@@ -8,17 +8,21 @@ export let useMovies=()=>{
     let dispatch=useDispatch();
 
 useEffect(()=>{
+    let controller=new AbortController();
 
-fetchAllMovies(dispatch)
+fetchAllMovies(dispatch,controller)
+        return ()=> controller.abort();
 
 },[])
 
 }
-let fetchAllMovies=async(dispatch:AppDispatch)=>{
+let fetchAllMovies=async(dispatch:AppDispatch,controller:AbortController)=>{
 
 let url="/api/movies/all"
 
-let data=await fetch(url);
+let data=await fetch(url,{
+    signal:controller.signal
+});
 
 
 if(!data.ok){

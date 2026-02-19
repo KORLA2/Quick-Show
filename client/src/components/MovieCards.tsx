@@ -21,6 +21,7 @@ scrollTo(0,0)
     transition duration-300 w-66 cursor-pointer
     '>
 <img  src={import.meta.env.VITE_TMDB_IMG_URL+movie.backdrop_path} 
+loading='lazy'
  className='rounded-lg object-cover h-52 w-full  cursor-pointer' /> 
     
     <p className='font-semibold mt-2 truncate'>{movie.title}</p>

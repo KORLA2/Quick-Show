@@ -7,20 +7,26 @@ export let useAdmin=()=>{
 let dispatch=useDispatch();
 
     useEffect(()=>{
+    let controller=new AbortController();
 
-        fetchAdmin(dispatch)
+        fetchAdmin(dispatch,controller);
+
+        return ()=> controller.abort();
     },[])
 
 }
 
 
- async function fetchAdmin(dispatch:AppDispatch){
+ async function fetchAdmin(dispatch:AppDispatch,controller:AbortController){
 
     try{
 
        let data= await fetch(`/api/admin/auth`,{
          credentials: "include",
-       });
+         signal:controller.signal
+       },
+       
+    );
 
        if(!data.ok){
         dispatch(setAdmin(false))

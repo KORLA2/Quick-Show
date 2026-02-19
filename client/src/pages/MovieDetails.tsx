@@ -5,7 +5,8 @@ import type { ShowState } from '../types/ShowState';
 import BlurCircle from '../components/BlurCircle';
 import { Heart, PlayCircleIcon, StarIcon } from 'lucide-react';
 import { TimeFormat } from '../TimeFormat';
-import { MovieCards, SelectDate } from '../components';
+import { MovieCards } from '../components';
+
 import Loading from '../components/Loading';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../../utils/store';
@@ -25,10 +26,12 @@ let shows=useSelector((store:RootState)=>store.movie.nowplaying);
 let myFavouriteIds=myFavouriteMovies.map((myfavmov)=>myfavmov.id)
 
 
-let getCastData=async()=>{
+let getCastData=async(controller:AbortController)=>{
   setLoading(true)
 try{
-  let data=await fetch(`/api/movie/${id}/credits`)
+  let data=await fetch(`/api/movie/${id}/credits`,{
+    signal:controller.signal
+  })
 
 
   let jsondata= await data.json();
@@ -44,11 +47,13 @@ console.log(error)
 setLoading(false)
 }
 
-let getMovie=async()=>{
+let getMovie=async(controller:AbortController)=>{
   setLoading(true)
 try{
 
-  let data=await fetch(`/api/movie/${id}`)
+  let data=await fetch(`/api/movie/${id}`,{
+    signal:controller.signal
+  })
   if(!data.ok){
   let jsondata=await data.json();
     
@@ -68,9 +73,14 @@ setLoading(false)
 }
 
 useEffect(()=>{
+
+      let controller=new AbortController();
+
   scrollTo(0,0);
-getMovie();
-getCastData();
+getMovie(controller);
+getCastData(controller);
+
+ return ()=> controller.abort();
 
 },[id])
 
@@ -112,7 +122,9 @@ console.log(selectedMovie?.genres);
 
   return !loading? <div className='px-6 md:px-16 lg:px-40 md:pt-50 pt:30'>
       <div className='flex flex-col md:flex-row gap-8 mx-auto max-w-6xl'>
-          <img src={import.meta.env.VITE_TMDB_IMG_URL+selectedMovie?.poster_path} className='rounded-xl 
+          <img src={import.meta.env.VITE_TMDB_IMG_URL+selectedMovie?.poster_path}
+         fetchPriority='high'
+          className='rounded-xl 
           h-104 max-w-70 max-md:mx-auto
           '/>
           <div className='relative  flex flex-col gap-5 '>
@@ -150,7 +162,9 @@ console.log(selectedMovie?.genres);
           <div className='flex items-center gap-4 px-4 cursor-pointer w-max '>
             {
               cast?.map((cast,idx)=><div  className="flex flex-col  group items-center text-center" key={idx}>
-                    <img src={import.meta.env.VITE_TMDB_IMG_URL+cast.profile_path} className='rounded-full object-cover  group-hover:opacity-70 h-20 w-20'/>
+                    <img src={import.meta.env.VITE_TMDB_IMG_URL+cast.profile_path}
+                    loading='lazy'
+                    className='rounded-full object-cover  group-hover:opacity-70 h-20 w-20'/>
                     <p className='font-medium text-xs mt-3'>{cast.name}</p>
               </div>)
             }

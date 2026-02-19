@@ -1,19 +1,31 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import {Navbar , Footer,Auth} from "./components/index"
 import { Routes,Route, useLocation} from 'react-router-dom'
-import { Home, MovieDetails,Movies, MyBookings, SeatLayout,Favourites, Layout, Dashboard, AddShows, ListBooking, ListShows } from './pages'
+import  Home from "./pages/Home" 
+import  Layout from "./pages/admin/Layout" 
+import {lazy} from "react"
+ const MovieDetails=lazy(()=>import("./pages/MovieDetails"));
+ const Movies=lazy(()=>import("./pages/Movies"));
+ const MyBookings=lazy(()=>import("./pages/MyBookings"));
+ const SeatLayout= lazy(()=>import("./pages/SeatLayout"));
+ const Favourites=lazy(()=>import("./pages/Favourites")) ;
+ const Dashboard=lazy(()=>import("./pages/admin/Dashboard")); 
+ const  AddShows=lazy(()=>import("./pages/admin/AddShows")) 
+ const ListBooking=lazy(()=>import("./pages/admin/ListBooking"))
+ const  ListShows =lazy(()=>import("./pages/admin/ListShows"));
+ const Theaters =lazy(()=>import('./pages/Theaters'));
+
 import {  useSelector } from 'react-redux'
 import { useUser } from '../src/customhooks/useUser'
 import {  type RootState } from '../utils/store'
 import { Toaster } from 'react-hot-toast'
-import Theaters from './pages/Theaters'
-import AdminAuth from './components/admin/AdminAuth'
 import { useAdmin } from './customhooks/useAdmin'
+import AdminAuth from './components/admin/AdminAuth'
 import { AdminOnly} from './pages/admin/AdminOnly'
 import {GuestOnly } from './pages/admin/GuestOnly'
 import { useMovies } from './customhooks/useMovies'
 import useFavourites from './customhooks/useFavourites'
-import Loading from './components/Loading'
+
 const App = () => {
   let signIn=useSelector((store:RootState)=>store.auth.signIn);
 useUser();
@@ -37,7 +49,9 @@ signIn &&<div className='backdrop-blur  bg-black/10 z-11 top-0 left-0 right-0 bo
 }
 {!isAdminRoute&&<Navbar/>}
 <Toaster  position="top-center" />
+<Suspense fallback={<h1>Loading...</h1>}>
 <Routes>
+
 <Route path='/' element={<Home/>}/>
 <Route path="/user/*" element={<Home/>}/>
 <Route path='/movies' element={<Movies/>}/>
@@ -69,6 +83,8 @@ signIn &&<div className='backdrop-blur  bg-black/10 z-11 top-0 left-0 right-0 bo
 
 <Route path='*' element={<div>404 path not found</div>}/>
 </Routes>
+</Suspense>
+
  {!isAdminRoute&&<Footer/>}
 </div>
 
