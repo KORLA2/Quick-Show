@@ -17,7 +17,9 @@ import tailwindcss from '@tailwindcss/vite'
           target: "https://quick-show-u9uu.onrender.com/",
           changeOrigin: true,
         },
+        allowedHosts: 'all'
       },
     },
+    
    
   })
