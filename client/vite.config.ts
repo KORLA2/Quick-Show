@@ -12,13 +12,15 @@ import tailwindcss from '@tailwindcss/vite'
     }
     ),tailwindcss()],
     server: {
+      allowedHosts: true,
       proxy: {
         "/api": {
           target: "https://quick-show-u9uu.onrender.com/",
           changeOrigin: true,
         },
-        allowedHosts: 'all'
+        
       },
+  
     },
     
    
