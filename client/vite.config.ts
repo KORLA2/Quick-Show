@@ -1,7 +1,6 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
-import {analyzer} from "vite-bundle-analyzer"
 
 // https://vite.dev/config/
   export default defineConfig({
@@ -11,7 +10,7 @@ import {analyzer} from "vite-bundle-analyzer"
         plugins: ["babel-plugin-react-compiler"]
       }
     }
-    ),tailwindcss(),analyzer()],
+    ),tailwindcss()],
     server: {
       proxy: {
         "/api": {
