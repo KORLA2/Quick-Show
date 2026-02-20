@@ -25,7 +25,7 @@ async function createServer() {
   // middlewares). The following is valid even after restarts.
   app.use(vite.middlewares)
 
-app.use('*all', async (req, res, next) => {
+app.use(async (req, res, next) => {
   const url = req.originalUrl
 
   try {
@@ -62,7 +62,10 @@ app.use('*all', async (req, res, next) => {
     next(e)
   }
 })
-  app.listen(5173)
+ const PORT = process.env.PORT || 5173;
+app.listen(PORT, () => {
+  console.log(`Server running on ${PORT}`);
+});
 }
 
 createServer()
